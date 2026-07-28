@@ -1,0 +1,199 @@
+:root {
+  /* Microsoft Fluent 2 Dark Color System */
+  --fluent-bg: #0B0E14;
+  --fluent-surface-1: #121824;
+  --fluent-surface-2: #1A2234;
+  --fluent-surface-3: #242F46;
+  --fluent-surface-hover: #2C3A56;
+  
+  --fluent-border: rgba(255, 255, 255, 0.08);
+  --fluent-border-glow: rgba(0, 120, 212, 0.4);
+  
+  /* Fluent Accents */
+  --fluent-blue: #0078D4;
+  --fluent-cyan: #00BCF2;
+  --fluent-teal: #00B7C3;
+  --fluent-green: #107C41;
+  --fluent-purple: #8764B8;
+  --fluent-pink: #E3008C;
+  --fluent-amber: #F2C94C;
+  
+  /* Text */
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-muted: #6B7280;
+  
+  /* Heatmap Color Scale (LeetCode/GitHub style based on Efficiency) */
+  --heat-empty: #161D2A;
+  --heat-level-1: #064E3B; /* 1-40% efficiency */
+  --heat-level-2: #047857; /* 41-70% efficiency */
+  --heat-level-3: #10B981; /* 71-89% efficiency */
+  --heat-level-4: #34D399; /* 90-100% efficiency */
+  --heat-glow: 0 0 10px rgba(52, 211, 153, 0.6);
+
+  /* Elevation */
+  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.4);
+  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.25);
+  
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body.fluent-dark {
+  background-color: var(--fluent-bg);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Glassmorphic Acrylic Card */
+.fluent-card {
+  background: rgba(18, 24, 36, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--fluent-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.fluent-card:hover {
+  border-color: rgba(0, 188, 242, 0.3);
+  box-shadow: var(--fluent-shadow-md), 0 0 15px rgba(0, 188, 242, 0.1);
+  transform: translateY(-2px);
+}
+
+.fluent-card-glow {
+  border-color: rgba(0, 120, 212, 0.4);
+  box-shadow: var(--fluent-shadow-glow);
+}
+
+/* Fluent Buttons */
+.fluent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  font-family: var(--font-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+}
+
+.fluent-btn-primary {
+  background: linear-gradient(135deg, var(--fluent-blue), var(--fluent-cyan));
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.fluent-btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 16px rgba(0, 188, 242, 0.4);
+  transform: translateY(-1px);
+}
+
+.fluent-btn-secondary {
+  background: var(--fluent-surface-2);
+  color: var(--text-primary);
+  border-color: var(--fluent-border);
+}
+
+.fluent-btn-secondary:hover {
+  background: var(--fluent-surface-3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.fluent-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.fluent-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+/* Badges & Tags */
+.fluent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-easy { background: rgba(16, 124, 65, 0.2); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); }
+.badge-medium { background: rgba(242, 201, 76, 0.2); color: #F2C94C; border: 1px solid rgba(242, 201, 76, 0.3); }
+.badge-hard { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.3); }
+
+.badge-solved { background: rgba(0, 188, 242, 0.2); color: var(--fluent-cyan); border: 1px solid rgba(0, 188, 242, 0.4); }
+.badge-unsolved { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
+.badge-revising { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(192, 132, 252, 0.4); }
+
+/* Input fields */
+.fluent-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--fluent-surface-2);
+  border: 1px solid var(--fluent-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.fluent-input:focus {
+  border-color: var(--fluent-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 188, 242, 0.15);
+}
+
+.fluent-select {
+  padding: 10px 14px;
+  background: var(--fluent-surface-2);
+  border: 1px solid var(--fluent-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 0.875rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--fluent-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--fluent-surface-3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fluent-surface-hover);
+}
