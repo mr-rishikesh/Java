@@ -1,0 +1,17 @@
+{
+  "name": "prep-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Premium Microsoft Fluent Prep Dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node utils/seeder.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
+  }
+}
