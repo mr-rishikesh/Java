@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Heatmap from '../components/Heatmap';
-import DailyThree from '../components/DailyThree';
 import StatCard from '../components/StatCard';
 import { 
   Code2, 
@@ -26,6 +25,7 @@ export default function Dashboard({
   commList,
   setActiveTab
 }) {
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   // Compute Section Stats
   const totalDsa = dsaList.length || 474;
   const solvedDsa = dsaList.filter(p => p.status === 'Solved').length;
@@ -116,11 +116,76 @@ export default function Dashboard({
         />
       </div>
 
-      {/* Daily 3 Random Problems Widget */}
-      <DailyThree problems={dailyThree} onSolve={onSolveDsa} />
-
       {/* GitHub / LeetCode Style Daily Contribution Heatmap */}
-      <Heatmap heatmapData={heatmapData} />
+      <Heatmap 
+        heatmapData={heatmapData} 
+        selectedDate={selectedDate} 
+        onSelectDate={setSelectedDate} 
+      />
+
+      {/* Detailed Contribution Activity List for Selected Day */}
+      <div className="fluent-card" style={{ padding: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', borderBottom: '1px solid var(--fluent-border)', paddingBottom: '12px', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CheckCircle2 size={18} color="#00BCF2" />
+              Activities on {selectedDate}
+            </h3>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+              Detailed view of tasks solved, subjects studied, or project improvements completed
+            </p>
+          </div>
+          {heatmapData[selectedDate] && (
+            <div style={{ display: 'flex', gap: '16px', fontSize: '0.8rem', flexWrap: 'wrap' }}>
+              <span style={{ color: '#34D399', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Flame size={14} /> {heatmapData[selectedDate].count || 0} Logged
+              </span>
+              <span style={{ color: '#00BCF2', fontWeight: 600 }}>
+                ⏱️ {heatmapData[selectedDate].studyHours || 0} hrs
+              </span>
+              <span style={{ color: '#F2C94C', fontWeight: 600 }}>
+                🎯 {heatmapData[selectedDate].efficiency || 0}% Avg. Eff
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {heatmapData[selectedDate]?.items && heatmapData[selectedDate].items.length > 0 ? (
+            heatmapData[selectedDate].items.map((item, idx) => {
+              const getSectionBadgeClass = (sec) => {
+                switch (sec) {
+                  case 'Project': return 'badge-project';
+                  case 'CORE': return 'badge-core';
+                  case 'Apply': return 'badge-apply';
+                  case 'Communication': return 'badge-comm';
+                  default: return 'badge-solved';
+                }
+              };
+
+              return (
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderRadius: '8px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)', flexWrap: 'wrap', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span className={`fluent-badge ${getSectionBadgeClass(item.section)}`} style={{ fontWeight: 700, fontSize: '0.72rem', width: '90px', justifyContent: 'center' }}>
+                      {item.section}
+                    </span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      {item.title}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-text)' }}>
+                    Efficiency: {item.efficiency || 100}%
+                  </span>
+                </div>
+              );
+            })
+          ) : (
+            <div style={{ textAlign: 'center', padding: '24px', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+              No activity logged on {selectedDate}. Click on a heatmap square above to inspect that day's logs, or solve problems/log project improvements!
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* 5 Prep Sections Quick Navigation Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>

@@ -2,15 +2,22 @@ import React, { useState, useMemo } from 'react';
 import { Search, Filter, Plus, ExternalLink, BookOpen, PlayCircle, CheckCircle2, Award, ArrowUpRight } from 'lucide-react';
 import ProblemModal from '../components/ProblemModal';
 import CustomProblemModal from '../components/CustomProblemModal';
+import DailyThree from '../components/DailyThree';
 
-export default function DsaPage({ problems, onUpdateStatus, onAddCustom }) {
+export default function DsaPage({ problems, dailyThree, onUpdateStatus, onAddCustom }) {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedDifficulty, setSelectedDifficulty] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
+  const [showA2Z, setShowA2Z] = useState(false);
   
   const [activeModalProblem, setActiveModalProblem] = useState(null);
   const [showCustomModal, setShowCustomModal] = useState(false);
+
+  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+  const todaysSolved = useMemo(() => {
+    return problems.filter(p => p.status === 'Solved' && p.lastSolvedAt && new Date(p.lastSolvedAt).toISOString().split('T')[0] === todayStr);
+  }, [problems, todayStr]);
 
   // Extract unique categories
   const categories = useMemo(() => {
@@ -43,7 +50,7 @@ export default function DsaPage({ problems, onUpdateStatus, onAddCustom }) {
             DSA Problems Hub (Striver's A2Z Sheet)
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-            Showing {filtered.length} of {problems.length} total curated problems
+            {showA2Z ? `Showing ${filtered.length} of ${problems.length} total curated problems` : "Daily Recommended Challenges"}
           </p>
         </div>
 
@@ -54,6 +61,46 @@ export default function DsaPage({ problems, onUpdateStatus, onAddCustom }) {
           <Plus size={16} /> Add Custom Problem
         </button>
       </div>
+
+      {/* Daily Challenges Widget */}
+      <DailyThree 
+        problems={dailyThree} 
+        onSolve={onUpdateStatus} 
+      />
+
+      {/* Today's Solved Problems Section */}
+      {todaysSolved.length > 0 && (
+        <div className="fluent-card" style={{ padding: '20px' }}>
+          <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#10B981', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <CheckCircle2 size={16} /> Today's Solved Problems ({todaysSolved.length})
+          </h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {todaysSolved.map((prob) => (
+              <div key={prob._id || prob.problem_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--fluent-surface-2)', padding: '10px 16px', borderRadius: '8px', border: '1px solid var(--fluent-border)' }}>
+                <div>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>{prob.problem_name}</span>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginLeft: '10px' }}>({prob.subcategory_name || prob.category_name})</span>
+                </div>
+                <span className="fluent-badge badge-solved" style={{ fontSize: '0.72rem' }}>Eff: {prob.efficiency}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Toggle Button for Full A2Z Sheet */}
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0' }}>
+        <button 
+          onClick={() => setShowA2Z(!showA2Z)} 
+          className="fluent-btn fluent-btn-secondary"
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 24px', fontSize: '0.85rem', fontWeight: 700 }}
+        >
+          <BookOpen size={16} /> {showA2Z ? "Hide Full Striver's A2Z Sheet" : "Explore Full Striver's A2Z Sheet"}
+        </button>
+      </div>
+
+      {showA2Z && (
+        <>
 
       {/* Filter Control Toolbar */}
       <div className="fluent-card" style={{ padding: '16px', display: 'flex', flexWrap: 'wrap', gap: '14px', alignItems: 'center' }}>
@@ -148,7 +195,7 @@ export default function DsaPage({ problems, onUpdateStatus, onAddCustom }) {
                       transition: 'background 0.15s ease',
                       cursor: 'pointer'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--fluent-sidebar-hover)'}
                     onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
                     {/* Status Checkbox */}
@@ -243,6 +290,8 @@ export default function DsaPage({ problems, onUpdateStatus, onAddCustom }) {
           </div>
         )}
       </div>
+      </>
+      )}
 
       {/* Modals */}
       {activeModalProblem && (

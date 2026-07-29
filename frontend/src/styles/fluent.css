@@ -1,13 +1,13 @@
 :root {
-  /* Microsoft Fluent 2 Dark Color System */
+  /* Microsoft Fluent 2 Dark Color System - SOLID COLORS ONLY */
   --fluent-bg: #0B0E14;
   --fluent-surface-1: #121824;
-  --fluent-surface-2: #1A2234;
-  --fluent-surface-3: #242F46;
-  --fluent-surface-hover: #2C3A56;
+  --fluent-surface-2: #182030;
+  --fluent-surface-3: #212C42;
+  --fluent-surface-hover: #2B3955;
   
-  --fluent-border: rgba(255, 255, 255, 0.08);
-  --fluent-border-glow: rgba(0, 120, 212, 0.4);
+  --fluent-border: #1E293B;
+  --fluent-border-glow: #0078D4;
   
   /* Fluent Accents */
   --fluent-blue: #0078D4;
@@ -31,6 +31,13 @@
   --heat-level-4: #34D399; /* 90-100% efficiency */
   --heat-glow: 0 0 10px rgba(52, 211, 153, 0.6);
 
+  /* Dynamic variables - Solid */
+  --fluent-card-bg: #121824;
+  --fluent-navbar-bg: #121824;
+  --fluent-sidebar-hover: #1D273B;
+  --fluent-badge-inactive-bg: #1A2234;
+  --accent-text: #00BCF2;
+
   /* Elevation */
   --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
   --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
@@ -42,26 +49,60 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+body.fluent-light {
+  /* Microsoft Fluent 2 Light Color Scheme - SOLID COLORS ONLY */
+  --fluent-bg: #F4F6F9;
+  --fluent-surface-1: #FFFFFF;
+  --fluent-surface-2: #F9FAFB;
+  --fluent-surface-3: #E5E7EB;
+  --fluent-surface-hover: #F3F4F6;
+  
+  --fluent-border: #E5E7EB;
+  --fluent-border-glow: #0078D4;
+  
+  /* Text */
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  
+  /* Heatmap Color Scale for Light Theme */
+  --heat-empty: #E5E7EB;
+  --heat-level-1: #D1FAE5;
+  --heat-level-2: #6EE7B7;
+  --heat-level-3: #10B981;
+  --heat-level-4: #047857;
+  
+  --fluent-card-bg: #FFFFFF;
+  --fluent-navbar-bg: #FFFFFF;
+  --fluent-sidebar-hover: #F3F4F6;
+  --fluent-badge-inactive-bg: #E5E7EB;
+  --accent-text: #0078D4;
+  
+  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.08);
+  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body.fluent-dark {
+body {
   background-color: var(--fluent-bg);
   color: var(--text-primary);
   font-family: var(--font-main);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Glassmorphic Acrylic Card */
+/* Solid Card */
 .fluent-card {
-  background: rgba(18, 24, 36, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--fluent-card-bg);
   border: 1px solid var(--fluent-border);
   border-radius: 12px;
   padding: 20px;
@@ -148,8 +189,27 @@ body.fluent-dark {
 .badge-hard { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.3); }
 
 .badge-solved { background: rgba(0, 188, 242, 0.2); color: var(--fluent-cyan); border: 1px solid rgba(0, 188, 242, 0.4); }
-.badge-unsolved { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
+.badge-unsolved { background: var(--fluent-badge-inactive-bg); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
 .badge-revising { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(192, 132, 252, 0.4); }
+
+/* Custom Sections Badges */
+.badge-project { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-core { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(227, 0, 140, 0.3); }
+.badge-apply { background: rgba(242, 201, 76, 0.2); color: #F2C94C; border: 1px solid rgba(242, 201, 76, 0.3); }
+.badge-comm { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(135, 100, 184, 0.3); }
+
+/* Badge overrides for light theme to ensure excellent contrast */
+body.fluent-light .badge-easy { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
+body.fluent-light .badge-medium { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
+body.fluent-light .badge-hard { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
+body.fluent-light .badge-solved { background: rgba(0, 120, 212, 0.1); color: #0078D4; border: 1px solid rgba(0, 120, 212, 0.2); }
+body.fluent-light .badge-unsolved { background: rgba(0, 0, 0, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
+body.fluent-light .badge-revising { background: rgba(135, 100, 184, 0.15); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
+
+body.fluent-light .badge-project { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
+body.fluent-light .badge-core { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
+body.fluent-light .badge-apply { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
+body.fluent-light .badge-comm { background: rgba(135, 100, 184, 0.1); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
 
 /* Input fields */
 .fluent-input {

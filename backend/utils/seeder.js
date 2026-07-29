@@ -45,7 +45,7 @@ const seedDataFromFile = async () => {
                 plus: p.plus || null,
                 editorial: p.editorial || null,
                 link: p.link || null,
-                difficulty: p.difficulty || 'Easy',
+                difficulty: p.difficulty ? (p.difficulty.charAt(0).toUpperCase() + p.difficulty.slice(1).toLowerCase()) : 'Easy',
                 status: 'Unsolved',
                 efficiency: 0,
                 userNotes: ''

@@ -21,18 +21,9 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   ];
 
   return (
-    <aside style={{
-      width: '260px',
-      backgroundColor: 'var(--fluent-surface-1)',
-      borderRight: '1px solid var(--fluent-border)',
-      display: 'flex',
-      flexDirection: 'column',
-      flexShrink: 0,
-      minHeight: '100vh',
-      padding: '20px 16px'
-    }}>
+    <aside className="app-sidebar">
       {/* Brand Header */}
-      <div style={{
+      <div className="sidebar-logo-section" style={{
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
@@ -53,7 +44,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           <Zap size={22} color="#ffffff" />
         </div>
         <div>
-          <h1 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, #F3F4F6, #00BCF2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h1 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, var(--text-primary), #00BCF2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             PrepPulse
           </h1>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>
@@ -94,7 +85,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                  e.currentTarget.style.background = 'var(--fluent-sidebar-hover)';
                   e.currentTarget.style.color = 'var(--text-primary)';
                 }
               }}
@@ -114,7 +105,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                   fontSize: '0.68rem',
                   padding: '2px 8px',
                   borderRadius: '12px',
-                  background: isActive ? 'rgba(0, 188, 242, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+                  background: isActive ? 'rgba(0, 188, 242, 0.2)' : 'var(--fluent-badge-inactive-bg)',
                   color: isActive ? '#00BCF2' : 'var(--text-muted)',
                   fontWeight: 600
                 }}>
@@ -139,7 +130,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       </nav>
 
       {/* Footer Profile / System Info */}
-      <div style={{
+      <div className="sidebar-footer" style={{
         marginTop: 'auto',
         padding: '14px',
         borderRadius: '12px',

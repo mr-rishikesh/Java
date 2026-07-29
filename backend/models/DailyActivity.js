@@ -9,9 +9,11 @@ const dailyActivitySchema = new mongoose.Schema({
     title: { type: String, default: '' },
     efficiency: { type: Number, min: 0, max: 100, default: 100 }
   }],
+  activeDailyProblems: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Problem' }],
   averageEfficiency: { type: Number, min: 0, max: 100, default: 0 },
   studyHours: { type: Number, default: 0 },
   notes: { type: String, default: '' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('DailyActivity', dailyActivitySchema);
+
