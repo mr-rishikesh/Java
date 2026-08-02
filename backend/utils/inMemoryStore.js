@@ -16,111 +16,12 @@ class InMemoryStore {
     const problemDocs = await seedDataFromFile();
     this.problems = problemDocs.map((p, idx) => ({ ...p, _id: `mem_p_${idx + 1}` }));
     
-    this.core = [
-      {
-        _id: 'mem_c_1',
-        subject: 'Operating Systems',
-        question: 'What is the difference between a Process and a Thread?',
-        answer: 'A Process is an executing instance of a program with independent memory space. A Thread is a lightweight execution segment within a process sharing memory.',
-        keyTakeaways: ['Isolated memory space vs shared memory', 'Process creation overhead is higher'],
-        importance: 'High',
-        status: 'Learning',
-        efficiency: 85
-      },
-      {
-        _id: 'mem_c_2',
-        subject: 'DBMS',
-        question: 'Explain ACID Properties in Relational Databases.',
-        answer: 'Atomicity, Consistency, Isolation, Durability. Ensures reliability during concurrent transactions.',
-        keyTakeaways: ['Atomicity prevents partial writes', 'Isolation levels handle concurrency'],
-        importance: 'High',
-        status: 'Mastered',
-        efficiency: 95
-      },
-      {
-        _id: 'mem_c_3',
-        subject: 'System Design',
-        question: 'How do you scale a web application horizontally vs vertically?',
-        answer: 'Vertical scaling (Scale-up) adds CPU/RAM to a single server. Horizontal scaling (Scale-out) adds more server nodes behind a Load Balancer.',
-        keyTakeaways: ['Horizontal scaling requires stateless app servers', 'Use Redis for session sharing'],
-        importance: 'High',
-        status: 'Learning',
-        efficiency: 80
-      }
-    ];
-
-    this.projects = [
-      {
-        _id: 'mem_proj_1',
-        title: 'PrepPulse - Microsoft Fluent Interview Operating System',
-        description: 'Fullstack MERN platform for managing DSA problem solving, CS Fundamentals, System Design, Job Applications, and STAR behavioral prep.',
-        techStack: ['React', 'Node.js', 'Express', 'MongoDB', 'Vite', 'Fluent CSS'],
-        githubUrl: 'https://github.com/example/preppulse',
-        liveUrl: 'https://preppulse.dev',
-        status: 'In Progress',
-        efficiency: 90,
-        questions: [
-          {
-            _id: 'q_1',
-            question: 'How does the daily 3 random problem algorithm handle unique dates?',
-            answer: 'Uses a deterministic hash of YYYY-MM-DD to seed the pseudo-random generator, ensuring identical recommendations throughout the day.',
-            type: 'Architecture'
-          }
-        ],
-        improvements: []
-      }
-    ];
-
-    this.jobs = [
-      {
-        _id: 'mem_job_1',
-        company: 'Microsoft',
-        role: 'Software Engineer II (Fullstack)',
-        location: 'Redmond, WA / Remote',
-        salary: '$180,000 - $220,000',
-        status: 'Interviewing',
-        appliedDate: new Date(),
-        jobUrl: 'https://careers.microsoft.com',
-        notes: 'System Design round scheduled next week. Focus on Azure services, microservices, and distributed caching.',
-        questions: [
-          {
-            _id: 'jq_1',
-            question: 'Design a scalable notification service that handles millions of events per minute.',
-            round: 'System Design',
-            answerNotes: 'Use Kafka for event queuing and Redis for subscriber preferences.'
-          }
-        ]
-      },
-      {
-        _id: 'mem_job_2',
-        company: 'Google',
-        role: 'Software Engineer (L4)',
-        location: 'Mountain View, CA',
-        salary: '$200,000 - $250,000',
-        status: 'Applied',
-        appliedDate: new Date(),
-        jobUrl: 'https://careers.google.com',
-        notes: 'Referral submitted by senior engineer.',
-        questions: []
-      }
-    ];
-
-    this.comm = [
-      {
-        _id: 'mem_comm_1',
-        title: 'Tell me about a time you resolved a major technical disagreement in a team.',
-        category: 'Conflict Resolution',
-        situation: 'During the architecture phase of our microservice project, engineers disagreed on GraphQL vs REST.',
-        task: 'As tech lead, I needed to align the team without delaying the development roadmap.',
-        action: 'I organized a 1-hour benchmark spike where both members presented prototype metrics.',
-        result: 'Agreed on REST for high-throughput public endpoints and GraphQL for flexible internal mobile dashboard queries.',
-        fullAnswer: 'I approach technical disputes through data-driven spikes rather than subjective arguments.',
-        confidenceLevel: 'High',
-        efficiency: 90
-      }
-    ];
-
-    this.activities = generateInitialHeatmapData().map((a, idx) => ({ ...a, _id: `mem_act_${idx}` }));
+    this.core = [];
+    this.projects = [];
+    this.jobs = [];
+    this.comm = [];
+    this.activities = [];
+    
     this.initialized = true;
     console.log(`[InMemoryStore]: Initialized with ${this.problems.length} problems.`);
   }
@@ -346,13 +247,35 @@ class InMemoryStore {
   addCore(q) {
     const newQ = { ...q, _id: `mem_c_${Date.now()}` };
     this.core.unshift(newQ);
+    
+    // Log daily activity
+    const todayStr = new Date().toISOString().split('T')[0];
+    this.logActivity({
+      date: todayStr,
+      section: 'CORE',
+      itemId: newQ._id,
+      title: `Studied ${q.subject}: ${q.question}`,
+      efficiency: q.efficiency || 100
+    });
     return newQ;
   }
   updateCore(id, data) {
     const idx = this.core.findIndex(c => c._id === id);
     if (idx !== -1) {
       this.core[idx] = { ...this.core[idx], ...data };
-      return this.core[idx];
+      const updated = this.core[idx];
+      
+      // Log daily activity
+      const todayStr = new Date().toISOString().split('T')[0];
+      this.logActivity({
+        date: todayStr,
+        section: 'CORE',
+        itemId: updated._id,
+        title: `Revised ${updated.subject}: ${updated.question}`,
+        efficiency: updated.efficiency || 100
+      });
+      
+      return updated;
     }
     return null;
   }

@@ -140,7 +140,14 @@ export default function App() {
         body: JSON.stringify(coreData)
       });
       const json = await res.json();
-      if (json.success) setCoreList(prev => [json.data, ...prev]);
+      if (json.success) {
+        setCoreList(prev => [json.data, ...prev]);
+        
+        // Refresh heatmap data
+        const heatRes = await fetch('/api/progress/heatmap');
+        const heatJson = await heatRes.json();
+        if (heatJson.success) setHeatmapData(heatJson.data || {});
+      }
     } catch (e) {
       console.error('Error adding core question:', e);
     }
@@ -156,6 +163,11 @@ export default function App() {
       const json = await res.json();
       if (json.success) {
         setCoreList(prev => prev.map(c => c._id === id ? { ...c, ...json.data } : c));
+        
+        // Refresh heatmap data
+        const heatRes = await fetch('/api/progress/heatmap');
+        const heatJson = await heatRes.json();
+        if (heatJson.success) setHeatmapData(heatJson.data || {});
       }
     } catch (e) {
       console.error('Error updating core question:', e);

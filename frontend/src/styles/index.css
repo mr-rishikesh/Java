@@ -4,7 +4,7 @@
 .app-container {
   display: flex;
   min-height: 100vh;
-  background-color: var(--fluent-bg);
+  background: var(--fluent-bg-gradient, var(--fluent-bg));
 }
 
 .main-content {
@@ -12,79 +12,112 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: transparent;
 }
 
 .page-container {
-  padding: 28px;
+  padding: 32px;
   max-width: 1600px;
   margin: 0 auto;
   width: 100%;
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Modal Backdrop */
+/* Premium Acrylic Modal Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
+  background: rgba(3, 7, 18, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justifyContent: center;
   z-index: 100;
-  padding: 20px;
+  padding: 24px;
 }
 
 .modal-content {
-  background: var(--fluent-surface-1);
-  border: 1px solid var(--fluent-border);
-  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
   width: 100%;
   max-width: 650px;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
-  box-shadow: var(--fluent-shadow-lg), 0 0 30px rgba(0, 120, 212, 0.15);
-  animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--fluent-shadow-lg), 0 0 40px rgba(59, 130, 246, 0.15);
+  animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.fluent-light .modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--fluent-shadow-lg), 0 0 35px rgba(0, 120, 212, 0.06);
 }
 
 @keyframes modalScale {
-  from { opacity: 0; transform: scale(0.95); }
+  from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Sidebar Class styles */
+/* Sidebar Acrylic Design */
 .app-sidebar {
-  width: 260px;
-  background-color: var(--fluent-surface-1);
+  width: 280px;
+  background: rgba(11, 15, 25, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-right: 1px solid var(--fluent-border);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   min-height: 100vh;
-  padding: 20px 16px;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  padding: 24px 20px;
+  transition: all 0.3s ease;
   box-sizing: border-box;
 }
 
-/* Navbar Class styles */
+body.fluent-light .app-sidebar {
+  background: rgba(255, 255, 255, 0.85);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Navbar Acrylic Design */
 .app-navbar {
-  height: 70px;
-  background-color: var(--fluent-navbar-bg);
+  height: 75px;
+  background: rgba(3, 7, 18, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--fluent-border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 28px;
+  justifyContent: space-between;
+  padding: 0 32px;
   position: sticky;
   top: 0;
   z-index: 40;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  transition: all 0.3s ease;
   box-sizing: border-box;
+}
+
+body.fluent-light .app-navbar {
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Active navigation indicators and hover updates */
+.app-sidebar nav button {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.app-sidebar nav button:hover {
+  transform: translateX(4px);
 }
 
 /* Media query for tablet and mobile responsiveness */
@@ -98,7 +131,7 @@
     min-height: auto !important;
     border-right: none !important;
     border-bottom: 1px solid var(--fluent-border);
-    padding: 16px !important;
+    padding: 20px !important;
   }
 
   .app-sidebar .sidebar-logo-section {
@@ -115,20 +148,24 @@
   .app-sidebar nav button {
     flex: 1 1 calc(50% - 8px) !important;
     justify-content: center !important;
-    padding: 8px 12px !important;
-    font-size: 0.82rem !important;
+    padding: 10px 14px !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .app-sidebar nav button:hover {
+    transform: none !important;
   }
 
   .app-sidebar .sidebar-footer {
-    display: none !important; /* Hide footer to save vertical space on mobile */
+    display: none !important;
   }
 
   .app-navbar {
     height: auto !important;
-    padding: 16px 20px !important;
+    padding: 20px !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 14px;
+    gap: 16px;
   }
 
   .app-navbar .navbar-title {
@@ -140,7 +177,7 @@
     flex-direction: row !important;
     flex-wrap: wrap;
     justify-content: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
   }
 
   .app-navbar .navbar-search {
@@ -149,6 +186,6 @@
   }
 
   .page-container {
-    padding: 16px !important;
+    padding: 20px !important;
   }
 }

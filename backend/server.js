@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 const { connectDB, getIsFallback } = require('./config/db');
 const { runSeeder } = require('./utils/seeder');
 const store = require('./utils/inMemoryStore');
@@ -11,6 +12,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Database connection middleware for serverless environment
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    await connectDB();
+  }
+  next();
+});
 
 // Mount Routes
 app.use('/api/dsa', require('./routes/dsaRoutes'));
@@ -47,4 +56,10 @@ const startServer = async () => {
   });
 };
 
-startServer();
+if (process.env.VERCEL) {
+  // Export app instance for Vercel Serverless Function
+  module.exports = app;
+} else {
+  // Run standard local server listening on PORT
+  startServer();
+}

@@ -46,40 +46,6 @@ export default function Dashboard({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      {/* Welcome & Target Banner */}
-      <div className="fluent-card fluent-card-glow" style={{
-        background: 'rgba(0, 120, 212, 0.2)',
-        border: '1px solid rgba(0, 188, 242, 0.3)',
-        padding: '24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '16px'
-      }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ fontSize: '0.8rem', padding: '2px 10px', borderRadius: '12px', background: 'rgba(0,188,242,0.2)', color: '#00BCF2', fontWeight: 700 }}>
-              🚀 Microsoft Fluent Interview Operating System
-            </span>
-          </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            Welcome back to your Daily Prep Command Center!
-          </h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-            All 474 Striver A2Z problems loaded. Solve today's 3 random picks to maintain your efficiency streak!
-          </p>
-        </div>
-
-        <button
-          onClick={() => setActiveTab('dsa')}
-          className="fluent-btn fluent-btn-primary"
-          style={{ padding: '10px 20px', fontSize: '0.9rem' }}
-        >
-          Explore Striver Sheet <ArrowRight size={16} />
-        </button>
-      </div>
-
       {/* 4 Overview Stat Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
         <StatCard
@@ -150,40 +116,113 @@ export default function Dashboard({
           )}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          {heatmapData[selectedDate]?.items && heatmapData[selectedDate].items.length > 0 ? (
-            heatmapData[selectedDate].items.map((item, idx) => {
-              const getSectionBadgeClass = (sec) => {
-                switch (sec) {
-                  case 'Project': return 'badge-project';
-                  case 'CORE': return 'badge-core';
-                  case 'Apply': return 'badge-apply';
-                  case 'Communication': return 'badge-comm';
-                  default: return 'badge-solved';
-                }
-              };
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {(() => {
+            const dailyItems = heatmapData[selectedDate]?.items || [];
+            const dsaItems = dailyItems.filter(i => i.section === 'DSA');
+            const projectItems = dailyItems.filter(i => i.section === 'Project');
+            const coreItems = dailyItems.filter(i => i.section === 'CORE');
+            const otherItems = dailyItems.filter(i => i.section !== 'DSA' && i.section !== 'Project' && i.section !== 'CORE');
 
+            if (dailyItems.length === 0) {
               return (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderRadius: '8px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)', flexWrap: 'wrap', gap: '8px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span className={`fluent-badge ${getSectionBadgeClass(item.section)}`} style={{ fontWeight: 700, fontSize: '0.72rem', width: '90px', justifyContent: 'center' }}>
-                      {item.section}
-                    </span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-                      {item.title}
-                    </span>
-                  </div>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-text)' }}>
-                    Efficiency: {item.efficiency || 100}%
-                  </span>
+                <div style={{ textAlign: 'center', padding: '36px 24px', color: 'var(--text-muted)', fontSize: '0.82rem', background: 'var(--fluent-surface-2)', borderRadius: '8px', border: '1px dashed var(--fluent-border)' }}>
+                  No preparation activity logged on {selectedDate}. Click on a heatmap square above to inspect that day's logs, or solve problems/log project improvements!
                 </div>
               );
-            })
-          ) : (
-            <div style={{ textAlign: 'center', padding: '24px', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-              No activity logged on {selectedDate}. Click on a heatmap square above to inspect that day's logs, or solve problems/log project improvements!
-            </div>
-          )}
+            }
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* DSA Group */}
+                {dsaItems.length > 0 && (
+                  <div>
+                    <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#00BCF2', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <Code2 size={16} /> DSA Problems Solved ({dsaItems.length})
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {dsaItems.map((item, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: '6px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                            {item.title}
+                          </span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#00BCF2' }}>
+                            {item.efficiency ? `Efficiency: ${item.efficiency}%` : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Project Improvements Group */}
+                {projectItems.length > 0 && (
+                  <div>
+                    <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#F472B6', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <FolderGit2 size={16} /> Project Improvements ({projectItems.length})
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {projectItems.map((item, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: '6px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                            {item.title}
+                          </span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#F472B6' }}>
+                            {item.efficiency ? `Efficiency: ${item.efficiency}%` : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Core CS Group */}
+                {coreItems.length > 0 && (
+                  <div>
+                    <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#10B981', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <Cpu size={16} /> Core CS Fundamentals ({coreItems.length})
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {coreItems.map((item, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: '6px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)' }}>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                            {item.title}
+                          </span>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#10B981' }}>
+                            {item.efficiency ? `Efficiency: ${item.efficiency}%` : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Other Activities Group */}
+                {otherItems.length > 0 && (
+                  <div>
+                    <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#8764B8', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <Zap size={16} /> Other Preparation ({otherItems.length})
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      {otherItems.map((item, idx) => (
+                        <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: '6px', background: 'var(--fluent-surface-2)', border: '1px solid var(--fluent-border)' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span className="fluent-badge badge-apply" style={{ fontSize: '0.7rem', padding: '1px 6px' }}>{item.section}</span>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                              {item.title}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#8764B8' }}>
+                            {item.efficiency ? `Efficiency: ${item.efficiency}%` : ''}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </div>
 

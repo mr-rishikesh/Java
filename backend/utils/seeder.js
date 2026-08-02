@@ -189,17 +189,53 @@ const generateInitialHeatmapData = () => {
     if (rand > (isWeekend ? 0.6 : 0.35)) {
       const solved = Math.floor(rand * 5) + 1;
       const efficiency = Math.floor(70 + rand * 30); // 70% to 100%
+      
+      const itemsSolved = Array.from({ length: solved }, (_, idx) => {
+        let section = 'DSA';
+        let title = `Solved DSA: Problem #${idx + 1}`;
+        
+        // Seeded category selector
+        const sectRand = (Math.sin(i * 9.87 + idx) + 1) / 2;
+        if (sectRand > 0.82) {
+          section = 'Project';
+          const projects = ['PrepPulse Dashboard', 'Secure Auth Service', 'Fluent CSS Library'];
+          const improvements = [
+            'Optimized MongoDB indexes and query execution plans',
+            'Implemented custom Fluent UI dark-mode components',
+            'Fixed thread concurrency pool leak in backend',
+            'Added responsive sidebar design layout for tablets'
+          ];
+          const projName = projects[Math.floor(sectRand * projects.length) % projects.length];
+          const impDesc = improvements[idx % improvements.length];
+          title = `Improved ${projName}: ${impDesc}`;
+        } else if (sectRand > 0.68) {
+          section = 'CORE';
+          const topics = ['Operating Systems', 'DBMS', 'Computer Networks', 'System Design'];
+          const questions = [
+            'Reviewed Process vs Thread memory virtualization and scheduling overhead',
+            'Revised ACID Transaction Isolation levels and Read/Write locks',
+            'Studied TCP 3-Way Handshake, Flow Control, and Congestion Avoidance',
+            'Designed Distributed Caching strategy using Redis and Sliding Window Rate Limiting'
+          ];
+          const topicName = topics[Math.floor(sectRand * topics.length) % topics.length];
+          const questionDesc = questions[idx % questions.length];
+          title = `CORE [${topicName}]: ${questionDesc}`;
+        }
+        
+        return {
+          section,
+          itemId: `seeded-${section.toLowerCase()}-${idx}`,
+          title,
+          efficiency: Math.max(50, Math.min(100, Math.floor(efficiency - (idx * 2))))
+        };
+      });
+
       activities.push({
         date: dateStr,
         solvedCount: solved,
         averageEfficiency: efficiency,
         studyHours: Number((solved * 0.75).toFixed(1)),
-        itemsSolved: Array.from({ length: solved }, (_, idx) => ({
-          section: 'DSA',
-          itemId: `p-${idx}`,
-          title: `Problem #${idx + 1}`,
-          efficiency: efficiency
-        }))
+        itemsSolved: itemsSolved
       });
     }
   }
@@ -221,46 +257,15 @@ const runSeeder = async () => {
       } else {
         console.log(`[Seeder]: MongoDB already contains ${existingCount} problems. Skipping initial insert.`);
       }
-
-      const coreCount = await CoreQuestion.countDocuments();
-      if (coreCount === 0) {
-        await CoreQuestion.insertMany(defaultCoreQuestions);
-        console.log(`[Seeder]: Inserted default Core CS questions.`);
-      }
-
-      const projCount = await Project.countDocuments();
-      if (projCount === 0) {
-        await Project.insertMany(defaultProjects);
-        console.log(`[Seeder]: Inserted default Projects.`);
-      }
-
-      const jobCount = await JobApplication.countDocuments();
-      if (jobCount === 0) {
-        await JobApplication.insertMany(defaultJobs);
-        console.log(`[Seeder]: Inserted default Job Applications.`);
-      }
-
-      const commCount = await Communication.countDocuments();
-      if (commCount === 0) {
-        await Communication.insertMany(defaultComm);
-        console.log(`[Seeder]: Inserted default Communication items.`);
-      }
-
-      const actCount = await DailyActivity.countDocuments();
-      if (actCount === 0) {
-        const heatmapDocs = generateInitialHeatmapData();
-        await DailyActivity.insertMany(heatmapDocs);
-        console.log(`[Seeder]: Inserted ${heatmapDocs.length} days of initial activity data for Heatmap.`);
-      }
     }
 
     return {
       problems: problemDocs,
-      core: defaultCoreQuestions,
-      projects: defaultProjects,
-      jobs: defaultJobs,
-      comm: defaultComm,
-      heatmap: generateInitialHeatmapData()
+      core: [],
+      projects: [],
+      jobs: [],
+      comm: [],
+      heatmap: []
     };
   } catch (err) {
     console.error(`[Seeder Error]: ${err.message}`);

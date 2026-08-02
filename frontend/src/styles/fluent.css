@@ -1,87 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
 :root {
-  /* Microsoft Fluent 2 Dark Color System - Rich Navy Blue Theme - SOLID COLORS ONLY */
-  --fluent-bg: #0A1128;
-  --fluent-surface-1: #101E3D;
-  --fluent-surface-2: #16284E;
-  --fluent-surface-3: #1E3566;
-  --fluent-surface-hover: #264380;
+  /* Microsoft Fluent 2 Dark Acrylic - Deep Space Charcoal & Neon Gradients */
+  --fluent-bg: #030712;
+  --fluent-bg-gradient: linear-gradient(135deg, #030712 0%, #0a0f1d 50%, #050510 100%);
   
-  --fluent-border: #1E3A70;
-  --fluent-border-glow: #2563EB;
+  --fluent-surface-1: rgba(15, 23, 42, 0.65);
+  --fluent-surface-2: rgba(30, 41, 59, 0.45);
+  --fluent-surface-3: rgba(51, 65, 85, 0.4);
+  --fluent-surface-hover: rgba(51, 65, 85, 0.55);
   
-  /* Fluent Navy Accents */
-  --fluent-blue: #1D4ED8;
-  --fluent-cyan: #38BDF8;
+  --fluent-border: rgba(255, 255, 255, 0.08);
+  --fluent-border-glow: rgba(56, 189, 248, 0.4);
+  
+  /* Primary brand gradients & accent colors */
+  --brand-gradient: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
+  
+  --fluent-blue: #3B82F6;
+  --fluent-cyan: #06B6D4;
   --fluent-teal: #0D9488;
   --fluent-green: #10B981;
-  --fluent-purple: #7C3AED;
+  --fluent-purple: #8B5CF6;
   --fluent-pink: #EC4899;
   --fluent-amber: #F59E0B;
   
   /* Text */
   --text-primary: #F8FAFC;
   --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text-muted: #475569;
   
   /* Heatmap Color Scale (LeetCode/GitHub style based on Efficiency) */
-  --heat-empty: #16284E;
-  --heat-level-1: #065F46;
-  --heat-level-2: #047857;
-  --heat-level-3: #10B981;
-  --heat-level-4: #34D399;
-  --heat-glow: 0 0 10px rgba(52, 211, 153, 0.6);
+  --heat-empty: rgba(255, 255, 255, 0.03);
+  --heat-level-1: rgba(16, 185, 129, 0.15);
+  --heat-level-2: rgba(16, 185, 129, 0.4);
+  --heat-level-3: rgba(16, 185, 129, 0.7);
+  --heat-level-4: rgba(16, 185, 129, 1);
+  --heat-glow: 0 0 10px rgba(16, 185, 129, 0.6);
 
-  /* Dynamic variables - Solid Navy */
-  --fluent-card-bg: #101E3D;
-  --fluent-navbar-bg: #0A1128;
-  --fluent-sidebar-hover: #16284E;
-  --fluent-badge-inactive-bg: #16284E;
+  /* Dynamic variables */
+  --fluent-card-bg: rgba(15, 23, 42, 0.6);
+  --fluent-navbar-bg: rgba(3, 7, 18, 0.7);
+  --fluent-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --fluent-badge-inactive-bg: rgba(255, 255, 255, 0.05);
   --accent-text: #38BDF8;
 
-  /* Elevation */
-  --fluent-shadow-sm: 0 2px 4px rgba(5, 10, 25, 0.3);
-  --fluent-shadow-md: 0 8px 16px rgba(5, 10, 25, 0.4);
-  --fluent-shadow-lg: 0 16px 32px rgba(5, 10, 25, 0.5);
-  --fluent-shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
+  /* Shadows */
+  --fluent-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --fluent-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+  --fluent-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+  --fluent-shadow-glow: 0 0 25px rgba(59, 130, 246, 0.15);
   
   /* Typography */
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 body.fluent-light {
-  /* Microsoft Fluent 2 Light Color Scheme - SOLID COLORS ONLY */
-  --fluent-bg: #F4F6F9;
-  --fluent-surface-1: #FFFFFF;
-  --fluent-surface-2: #F9FAFB;
-  --fluent-surface-3: #E5E7EB;
-  --fluent-surface-hover: #F3F4F6;
+  /* Microsoft Fluent 2 Light Acrylic - Clean Warm Grey & Blue Accents */
+  --fluent-bg: #F8F9FA;
+  --fluent-bg-gradient: linear-gradient(135deg, #F8F9FA 0%, #F1F3F5 50%, #E9ECEF 100%);
   
-  --fluent-border: #E5E7EB;
-  --fluent-border-glow: #0078D4;
+  --fluent-surface-1: rgba(255, 255, 255, 0.75);
+  --fluent-surface-2: rgba(241, 243, 245, 0.65);
+  --fluent-surface-3: rgba(222, 226, 230, 0.6);
+  --fluent-surface-hover: rgba(233, 236, 239, 0.7);
+  
+  --fluent-border: rgba(0, 0, 0, 0.06);
+  --fluent-border-glow: rgba(0, 120, 212, 0.25);
+  
+  /* Primary brand gradients & accents */
+  --brand-gradient: linear-gradient(135deg, #0078D4 0%, #7C3AED 100%);
+  --brand-gradient-hover: linear-gradient(135deg, #108BE3 0%, #8B5CF6 100%);
+  
+  --fluent-blue: #0078D4;
+  --fluent-cyan: #0284C7;
+  --fluent-teal: #0F766E;
+  --fluent-green: #047857;
+  --fluent-purple: #6D28D9;
+  --fluent-pink: #BE185D;
+  --fluent-amber: #B45309;
   
   /* Text */
-  --text-primary: #1F2937;
-  --text-secondary: #4B5563;
-  --text-muted: #9CA3AF;
+  --text-primary: #1A1D20;
+  --text-secondary: #495057;
+  --text-muted: #ADB5BD;
   
   /* Heatmap Color Scale for Light Theme */
-  --heat-empty: #E5E7EB;
+  --heat-empty: rgba(0, 0, 0, 0.04);
   --heat-level-1: #D1FAE5;
   --heat-level-2: #6EE7B7;
   --heat-level-3: #10B981;
   --heat-level-4: #047857;
   
-  --fluent-card-bg: #FFFFFF;
-  --fluent-navbar-bg: #FFFFFF;
-  --fluent-sidebar-hover: #F3F4F6;
-  --fluent-badge-inactive-bg: #E5E7EB;
+  --fluent-card-bg: rgba(255, 255, 255, 0.7);
+  --fluent-navbar-bg: rgba(255, 255, 255, 0.75);
+  --fluent-sidebar-hover: rgba(0, 0, 0, 0.04);
+  --fluent-badge-inactive-bg: rgba(0, 0, 0, 0.04);
   --accent-text: #0078D4;
   
-  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
-  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.08);
-  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
-  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
+  --fluent-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+  --fluent-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --fluent-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  --fluent-shadow-glow: 0 0 25px rgba(0, 120, 212, 0.06);
 }
 
 * {
@@ -91,34 +112,37 @@ body.fluent-light {
 }
 
 body {
-  background-color: var(--fluent-bg);
+  background: var(--fluent-bg-gradient, var(--fluent-bg));
   color: var(--text-primary);
   font-family: var(--font-main);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Solid Card */
+/* Acrylic card styling with glassmorphism */
 .fluent-card {
   background: var(--fluent-card-bg);
   border: 1px solid var(--fluent-border);
-  border-radius: 12px;
-  padding: 20px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--fluent-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
 .fluent-card:hover {
-  border-color: rgba(0, 188, 242, 0.3);
-  box-shadow: var(--fluent-shadow-md), 0 0 15px rgba(0, 188, 242, 0.1);
-  transform: translateY(-2px);
+  border-color: var(--fluent-border-glow);
+  box-shadow: var(--fluent-shadow-md), 0 12px 30px rgba(59, 130, 246, 0.08);
+  transform: translateY(-4px) scale(1.005);
 }
 
 .fluent-card-glow {
-  border-color: rgba(0, 120, 212, 0.4);
+  border-color: rgba(59, 130, 246, 0.3);
   box-shadow: var(--fluent-shadow-glow);
 }
 
@@ -127,39 +151,44 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 0.875rem;
   font-family: var(--font-main);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid transparent;
   outline: none;
   white-space: nowrap;
 }
 
+.fluent-btn:active {
+  transform: scale(0.98);
+}
+
 .fluent-btn-primary {
-  background: var(--fluent-blue);
+  background: var(--brand-gradient);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .fluent-btn-primary:hover {
-  filter: brightness(1.1);
-  box-shadow: 0 6px 16px rgba(0, 188, 242, 0.4);
+  background: var(--brand-gradient-hover);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
   transform: translateY(-1px);
 }
 
 .fluent-btn-secondary {
   background: var(--fluent-surface-2);
   color: var(--text-primary);
-  border-color: var(--fluent-border);
+  border: 1px solid var(--fluent-border);
 }
 
 .fluent-btn-secondary:hover {
   background: var(--fluent-surface-3);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .fluent-btn-ghost {
@@ -168,7 +197,7 @@ body {
 }
 
 .fluent-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--fluent-surface-hover);
   color: var(--text-primary);
 }
 
@@ -176,70 +205,76 @@ body {
 .fluent-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 2px 10px;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-.badge-easy { background: rgba(16, 124, 65, 0.2); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); }
-.badge-medium { background: rgba(242, 201, 76, 0.2); color: #F2C94C; border: 1px solid rgba(242, 201, 76, 0.3); }
-.badge-hard { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.3); }
+.badge-easy { background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.2); }
+.badge-medium { background: rgba(245, 158, 11, 0.12); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.2); }
+.badge-hard { background: rgba(236, 72, 153, 0.12); color: #EC4899; border: 1px solid rgba(236, 72, 153, 0.2); }
 
-.badge-solved { background: rgba(0, 188, 242, 0.2); color: var(--fluent-cyan); border: 1px solid rgba(0, 188, 242, 0.4); }
+.badge-solved { background: rgba(6, 182, 212, 0.12); color: #06B6D4; border: 1px solid rgba(6, 182, 212, 0.2); }
 .badge-unsolved { background: var(--fluent-badge-inactive-bg); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
-.badge-revising { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(192, 132, 252, 0.4); }
+.badge-revising { background: rgba(139, 92, 246, 0.12); color: #8B5CF6; border: 1px solid rgba(139, 92, 246, 0.2); }
 
 /* Custom Sections Badges */
-.badge-project { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
-.badge-core { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(227, 0, 140, 0.3); }
-.badge-apply { background: rgba(242, 201, 76, 0.2); color: #F2C94C; border: 1px solid rgba(242, 201, 76, 0.3); }
-.badge-comm { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(135, 100, 184, 0.3); }
+.badge-project { background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.25); }
+.badge-core { background: rgba(236, 72, 153, 0.12); color: #EC4899; border: 1px solid rgba(236, 72, 153, 0.25); }
+.badge-apply { background: rgba(245, 158, 11, 0.12); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.25); }
+.badge-comm { background: rgba(139, 92, 246, 0.12); color: #8B5CF6; border: 1px solid rgba(139, 92, 246, 0.25); }
 
-/* Badge overrides for light theme to ensure excellent contrast */
-body.fluent-light .badge-easy { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
-body.fluent-light .badge-medium { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
-body.fluent-light .badge-hard { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
-body.fluent-light .badge-solved { background: rgba(0, 120, 212, 0.1); color: #0078D4; border: 1px solid rgba(0, 120, 212, 0.2); }
-body.fluent-light .badge-unsolved { background: rgba(0, 0, 0, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
-body.fluent-light .badge-revising { background: rgba(135, 100, 184, 0.15); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
-
-body.fluent-light .badge-project { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
-body.fluent-light .badge-core { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
-body.fluent-light .badge-apply { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
-body.fluent-light .badge-comm { background: rgba(135, 100, 184, 0.1); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
+/* Badge overrides for light theme */
+body.fluent-light .badge-easy { background: rgba(4, 120, 87, 0.08); color: #047857; }
+body.fluent-light .badge-medium { background: rgba(180, 83, 9, 0.08); color: #B45309; }
+body.fluent-light .badge-hard { background: rgba(190, 24, 74, 0.08); color: #BE185D; }
+body.fluent-light .badge-solved { background: rgba(2, 132, 199, 0.08); color: #0284C7; }
+body.fluent-light .badge-revising { background: rgba(109, 40, 217, 0.08); color: #6D28D9; }
+body.fluent-light .badge-project { background: rgba(4, 120, 87, 0.08); color: #047857; }
+body.fluent-light .badge-core { background: rgba(190, 24, 74, 0.08); color: #BE185D; }
+body.fluent-light .badge-apply { background: rgba(180, 83, 9, 0.08); color: #B45309; }
+body.fluent-light .badge-comm { background: rgba(109, 40, 217, 0.08); color: #6D28D9; }
 
 /* Input fields */
 .fluent-input {
   width: 100%;
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: var(--fluent-surface-2);
   border: 1px solid var(--fluent-border);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-primary);
   font-family: var(--font-main);
   font-size: 0.875rem;
   outline: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fluent-input:focus {
-  border-color: var(--fluent-cyan);
-  box-shadow: 0 0 0 3px rgba(0, 188, 242, 0.15);
+  border-color: var(--fluent-blue);
+  background: var(--fluent-surface-1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .fluent-select {
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: var(--fluent-surface-2);
   border: 1px solid var(--fluent-border);
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text-primary);
   font-family: var(--font-main);
   font-size: 0.875rem;
   outline: none;
   cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fluent-select:focus {
+  border-color: var(--fluent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 /* Scrollbar */
@@ -248,11 +283,11 @@ body.fluent-light .badge-comm { background: rgba(135, 100, 184, 0.1); color: #6B
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--fluent-bg);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--fluent-surface-3);
-  border-radius: 3px;
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--fluent-surface-hover);
