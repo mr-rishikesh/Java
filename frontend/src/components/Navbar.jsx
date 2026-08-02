@@ -1,7 +1,7 @@
 import React from 'react';
-import { Search, Flame, RefreshCw, Award, Target } from 'lucide-react';
+import { Search, Flame, RefreshCw, Award, Target, Sun, Moon } from 'lucide-react';
 
-export default function Navbar({ activeTab, onRefresh, stats, searchQuery, setSearchQuery }) {
+export default function Navbar({ activeTab, onRefresh, stats, searchQuery, setSearchQuery, theme, toggleTheme }) {
   const titles = {
     dashboard: 'Dashboard & Daily Analytics',
     dsa: 'DSA Problems Hub (Striver A2Z)',
@@ -12,21 +12,9 @@ export default function Navbar({ activeTab, onRefresh, stats, searchQuery, setSe
   };
 
   return (
-    <header style={{
-      height: '70px',
-      backgroundColor: 'rgba(18, 24, 36, 0.8)',
-      backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid var(--fluent-border)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 28px',
-      position: 'sticky',
-      top: 0,
-      zIndex: 40
-    }}>
+    <header className="app-navbar">
       {/* Title */}
-      <div>
+      <div className="navbar-title">
         <h2 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>
           {titles[activeTab] || 'PrepPulse OS'}
         </h2>
@@ -36,9 +24,9 @@ export default function Navbar({ activeTab, onRefresh, stats, searchQuery, setSe
       </div>
 
       {/* Global Search & Metrics Bar */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <div className="navbar-metrics" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {/* Search */}
-        <div style={{ position: 'relative', width: '260px' }}>
+        <div className="navbar-search" style={{ position: 'relative', width: '260px' }}>
           <Search size={16} color="var(--text-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
@@ -92,6 +80,16 @@ export default function Navbar({ activeTab, onRefresh, stats, searchQuery, setSe
           title="Refresh Data & Daily Picks"
         >
           <RefreshCw size={16} />
+        </button>
+
+        {/* Theme toggle button */}
+        <button
+          onClick={toggleTheme}
+          className="fluent-btn fluent-btn-secondary"
+          style={{ height: '38px', padding: '0 12px' }}
+          title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        >
+          {theme === 'dark' ? <Sun size={16} color="#F2C94C" /> : <Moon size={16} color="#8764B8" />}
         </button>
       </div>
     </header>

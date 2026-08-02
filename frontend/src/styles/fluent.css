@@ -1,45 +1,87 @@
 :root {
-  /* Microsoft Fluent 2 Dark Color System */
-  --fluent-bg: #0B0E14;
-  --fluent-surface-1: #121824;
-  --fluent-surface-2: #1A2234;
-  --fluent-surface-3: #242F46;
-  --fluent-surface-hover: #2C3A56;
+  /* Microsoft Fluent 2 Dark Color System - Rich Navy Blue Theme - SOLID COLORS ONLY */
+  --fluent-bg: #0A1128;
+  --fluent-surface-1: #101E3D;
+  --fluent-surface-2: #16284E;
+  --fluent-surface-3: #1E3566;
+  --fluent-surface-hover: #264380;
   
-  --fluent-border: rgba(255, 255, 255, 0.08);
-  --fluent-border-glow: rgba(0, 120, 212, 0.4);
+  --fluent-border: #1E3A70;
+  --fluent-border-glow: #2563EB;
   
-  /* Fluent Accents */
-  --fluent-blue: #0078D4;
-  --fluent-cyan: #00BCF2;
-  --fluent-teal: #00B7C3;
-  --fluent-green: #107C41;
-  --fluent-purple: #8764B8;
-  --fluent-pink: #E3008C;
-  --fluent-amber: #F2C94C;
+  /* Fluent Navy Accents */
+  --fluent-blue: #1D4ED8;
+  --fluent-cyan: #38BDF8;
+  --fluent-teal: #0D9488;
+  --fluent-green: #10B981;
+  --fluent-purple: #7C3AED;
+  --fluent-pink: #EC4899;
+  --fluent-amber: #F59E0B;
   
   /* Text */
-  --text-primary: #F3F4F6;
-  --text-secondary: #9CA3AF;
-  --text-muted: #6B7280;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
   
   /* Heatmap Color Scale (LeetCode/GitHub style based on Efficiency) */
-  --heat-empty: #161D2A;
-  --heat-level-1: #064E3B; /* 1-40% efficiency */
-  --heat-level-2: #047857; /* 41-70% efficiency */
-  --heat-level-3: #10B981; /* 71-89% efficiency */
-  --heat-level-4: #34D399; /* 90-100% efficiency */
+  --heat-empty: #16284E;
+  --heat-level-1: #065F46;
+  --heat-level-2: #047857;
+  --heat-level-3: #10B981;
+  --heat-level-4: #34D399;
   --heat-glow: 0 0 10px rgba(52, 211, 153, 0.6);
 
+  /* Dynamic variables - Solid Navy */
+  --fluent-card-bg: #101E3D;
+  --fluent-navbar-bg: #0A1128;
+  --fluent-sidebar-hover: #16284E;
+  --fluent-badge-inactive-bg: #16284E;
+  --accent-text: #38BDF8;
+
   /* Elevation */
-  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
-  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.4);
-  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.25);
+  --fluent-shadow-sm: 0 2px 4px rgba(5, 10, 25, 0.3);
+  --fluent-shadow-md: 0 8px 16px rgba(5, 10, 25, 0.4);
+  --fluent-shadow-lg: 0 16px 32px rgba(5, 10, 25, 0.5);
+  --fluent-shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
   
   /* Typography */
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+}
+
+body.fluent-light {
+  /* Microsoft Fluent 2 Light Color Scheme - SOLID COLORS ONLY */
+  --fluent-bg: #F4F6F9;
+  --fluent-surface-1: #FFFFFF;
+  --fluent-surface-2: #F9FAFB;
+  --fluent-surface-3: #E5E7EB;
+  --fluent-surface-hover: #F3F4F6;
+  
+  --fluent-border: #E5E7EB;
+  --fluent-border-glow: #0078D4;
+  
+  /* Text */
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  
+  /* Heatmap Color Scale for Light Theme */
+  --heat-empty: #E5E7EB;
+  --heat-level-1: #D1FAE5;
+  --heat-level-2: #6EE7B7;
+  --heat-level-3: #10B981;
+  --heat-level-4: #047857;
+  
+  --fluent-card-bg: #FFFFFF;
+  --fluent-navbar-bg: #FFFFFF;
+  --fluent-sidebar-hover: #F3F4F6;
+  --fluent-badge-inactive-bg: #E5E7EB;
+  --accent-text: #0078D4;
+  
+  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.08);
+  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
 }
 
 * {
@@ -48,20 +90,19 @@
   padding: 0;
 }
 
-body.fluent-dark {
+body {
   background-color: var(--fluent-bg);
   color: var(--text-primary);
   font-family: var(--font-main);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Glassmorphic Acrylic Card */
+/* Solid Card */
 .fluent-card {
-  background: rgba(18, 24, 36, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--fluent-card-bg);
   border: 1px solid var(--fluent-border);
   border-radius: 12px;
   padding: 20px;
@@ -99,7 +140,7 @@ body.fluent-dark {
 }
 
 .fluent-btn-primary {
-  background: linear-gradient(135deg, var(--fluent-blue), var(--fluent-cyan));
+  background: var(--fluent-blue);
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
 }
@@ -148,8 +189,27 @@ body.fluent-dark {
 .badge-hard { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(244, 114, 182, 0.3); }
 
 .badge-solved { background: rgba(0, 188, 242, 0.2); color: var(--fluent-cyan); border: 1px solid rgba(0, 188, 242, 0.4); }
-.badge-unsolved { background: rgba(255, 255, 255, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
+.badge-unsolved { background: var(--fluent-badge-inactive-bg); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
 .badge-revising { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(192, 132, 252, 0.4); }
+
+/* Custom Sections Badges */
+.badge-project { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-core { background: rgba(227, 0, 140, 0.2); color: #F472B6; border: 1px solid rgba(227, 0, 140, 0.3); }
+.badge-apply { background: rgba(242, 201, 76, 0.2); color: #F2C94C; border: 1px solid rgba(242, 201, 76, 0.3); }
+.badge-comm { background: rgba(135, 100, 184, 0.2); color: #C084FC; border: 1px solid rgba(135, 100, 184, 0.3); }
+
+/* Badge overrides for light theme to ensure excellent contrast */
+body.fluent-light .badge-easy { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
+body.fluent-light .badge-medium { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
+body.fluent-light .badge-hard { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
+body.fluent-light .badge-solved { background: rgba(0, 120, 212, 0.1); color: #0078D4; border: 1px solid rgba(0, 120, 212, 0.2); }
+body.fluent-light .badge-unsolved { background: rgba(0, 0, 0, 0.05); color: var(--text-secondary); border: 1px solid var(--fluent-border); }
+body.fluent-light .badge-revising { background: rgba(135, 100, 184, 0.15); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
+
+body.fluent-light .badge-project { background: rgba(16, 124, 65, 0.1); color: #107C41; border: 1px solid rgba(16, 124, 65, 0.2); }
+body.fluent-light .badge-core { background: rgba(225, 29, 72, 0.1); color: #E11D48; border: 1px solid rgba(225, 29, 72, 0.2); }
+body.fluent-light .badge-apply { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.2); }
+body.fluent-light .badge-comm { background: rgba(135, 100, 184, 0.1); color: #6B21A8; border: 1px solid rgba(135, 100, 184, 0.2); }
 
 /* Input fields */
 .fluent-input {

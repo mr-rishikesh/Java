@@ -56,3 +56,99 @@
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* Sidebar Class styles */
+.app-sidebar {
+  width: 260px;
+  background-color: var(--fluent-surface-1);
+  border-right: 1px solid var(--fluent-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 100vh;
+  padding: 20px 16px;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+/* Navbar Class styles */
+.app-navbar {
+  height: 70px;
+  background-color: var(--fluent-navbar-bg);
+  border-bottom: 1px solid var(--fluent-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  box-sizing: border-box;
+}
+
+/* Media query for tablet and mobile responsiveness */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100% !important;
+    min-height: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--fluent-border);
+    padding: 16px !important;
+  }
+
+  .app-sidebar .sidebar-logo-section {
+    padding-bottom: 16px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .app-sidebar nav {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+
+  .app-sidebar nav button {
+    flex: 1 1 calc(50% - 8px) !important;
+    justify-content: center !important;
+    padding: 8px 12px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .app-sidebar .sidebar-footer {
+    display: none !important; /* Hide footer to save vertical space on mobile */
+  }
+
+  .app-navbar {
+    height: auto !important;
+    padding: 16px 20px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px;
+  }
+
+  .app-navbar .navbar-title {
+    text-align: center;
+  }
+
+  .app-navbar .navbar-metrics {
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center !important;
+    gap: 10px !important;
+  }
+
+  .app-navbar .navbar-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .page-container {
+    padding: 16px !important;
+  }
+}

@@ -12,6 +12,18 @@ import CommPage from './pages/CommPage';
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.remove('fluent-dark');
+      document.body.classList.add('fluent-light');
+    } else {
+      document.body.classList.remove('fluent-light');
+      document.body.classList.add('fluent-dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   // Data states
   const [heatmapData, setHeatmapData] = useState({});
@@ -86,7 +98,11 @@ export default function App() {
       if (json.success) {
         // Refresh local state
         setDsaList(prev => prev.map(p => (p._id === id || p.problem_id === id) ? { ...p, ...json.data } : p));
-        setDailyThree(prev => prev.map(p => (p._id === id || p.problem_id === id) ? { ...p, ...json.data } : p));
+        
+        // Refresh daily picks to pull swapped-in problems immediately
+        const d3Res = await fetch('/api/dsa/daily-three');
+        const d3Json = await d3Res.json();
+        if (d3Json.success) setDailyThree(d3Json.data || []);
         
         // Refresh heatmap
         const heatRes = await fetch('/api/progress/heatmap');
@@ -174,6 +190,27 @@ export default function App() {
       }
     } catch (e) {
       console.error('Error adding project question:', e);
+    }
+  };
+
+  const handleAddProjectImprovement = async (projId, impData) => {
+    try {
+      const res = await fetch(`/api/projects/${projId}/improvements`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(impData)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setProjectList(prev => prev.map(p => p._id === projId ? json.data : p));
+        
+        // Refresh heatmap data
+        const heatRes = await fetch('/api/progress/heatmap');
+        const heatJson = await heatRes.json();
+        if (heatJson.success) setHeatmapData(heatJson.data || {});
+      }
+    } catch (e) {
+      console.error('Error adding project improvement:', e);
     }
   };
 
@@ -271,6 +308,8 @@ export default function App() {
             setSearchQuery(q);
             if (q && activeTab !== 'dsa') setActiveTab('dsa');
           }}
+          theme={theme}
+          toggleTheme={() => setTheme(prev => (prev === 'dark' ? 'light' : 'dark'))}
         />
 
         <main className="page-container">
@@ -291,6 +330,7 @@ export default function App() {
           {activeTab === 'dsa' && (
             <DsaPage
               problems={dsaList}
+              dailyThree={dailyThree}
               onUpdateStatus={(id, data) => handleUpdateDsaStatus(id, data)}
               onAddCustom={handleAddCustomDsa}
             />
@@ -309,6 +349,7 @@ export default function App() {
               projectList={projectList}
               onAddProject={handleAddProject}
               onAddQuestion={handleAddProjectQuestion}
+              onAddImprovement={handleAddProjectImprovement}
             />
           )}
 

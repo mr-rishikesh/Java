@@ -18,6 +18,9 @@ const problemSchema = new mongoose.Schema({
   efficiency: { type: Number, min: 0, max: 100, default: 0 },
   userNotes: { type: String, default: '' },
   lastSolvedAt: { type: Date, default: null },
+  lastPresentedAt: { type: Date, default: null },
+  snoozeUntil: { type: Date, default: null },
+  neverShow: { type: Boolean, default: false },
   isCustom: { type: Boolean, default: false }
 }, { timestamps: true });
 

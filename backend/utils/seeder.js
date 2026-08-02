@@ -45,7 +45,7 @@ const seedDataFromFile = async () => {
                 plus: p.plus || null,
                 editorial: p.editorial || null,
                 link: p.link || null,
-                difficulty: p.difficulty || 'Easy',
+                difficulty: p.difficulty ? (p.difficulty.charAt(0).toUpperCase() + p.difficulty.slice(1).toLowerCase()) : 'Easy',
                 status: 'Unsolved',
                 efficiency: 0,
                 userNotes: ''
@@ -62,49 +62,31 @@ const seedDataFromFile = async () => {
 
 const defaultCoreQuestions = [
   {
-    subject: 'Operating Systems',
-    question: 'What is the difference between a Process and a Thread?',
-    answer: 'A Process is an executing instance of a program with independent memory space. A Thread is a lightweight execution segment within a process sharing memory, files, and resources with peer threads.',
-    keyTakeaways: ['Isolated memory space vs shared memory', 'Process creation overhead is higher', 'Context switching is faster for threads'],
+    subject: 'Core Subject',
+    question: 'Operating Systems & DBMS Core Fundamentals',
+    answer: 'Studied Process vs Thread memory isolation and reviewed ACID transaction isolation levels in relational databases.',
+    keyTakeaways: ['Isolated memory vs Shared memory', 'ACID Isolation levels: Read Committed & Serializable'],
     importance: 'High',
-    status: 'Learning',
-    efficiency: 85
-  },
-  {
-    subject: 'DBMS',
-    question: 'Explain ACID Properties in Relational Databases.',
-    answer: 'Atomicity (all or nothing execution), Consistency (data satisfies integrity constraints), Isolation (concurrent transactions execute independently), Durability (committed changes persist despite system crashes).',
-    keyTakeaways: ['Atomicity prevents partial writes', 'Isolation levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable'],
-    importance: 'High',
-    status: 'Mastered',
-    efficiency: 95
-  },
-  {
-    subject: 'Computer Networks',
-    question: 'Explain 3-Way Handshake in TCP connection establishment.',
-    answer: '1. Client sends SYN (Synchronize sequence number).\n2. Server responds with SYN-ACK (Synchronize-Acknowledge).\n3. Client sends ACK (Acknowledge). TCP connection is established.',
-    keyTakeaways: ['Ensures bidirectional communication readiness', 'Exchanges initial sequence numbers (ISN)'],
-    importance: 'High',
-    status: 'Mastered',
+    status: 'Completed',
     efficiency: 90
   },
   {
-    subject: 'OOPs',
-    question: 'What are the 4 Pillars of Object-Oriented Programming?',
-    answer: '1. Encapsulation (bundling data & methods with restricted access)\n2. Abstraction (hiding implementation complexity)\n3. Inheritance (reusing parent class properties)\n4. Polymorphism (overloading & overriding methods).',
-    keyTakeaways: ['Compile-time polymorphism (overloading)', 'Run-time polymorphism (virtual functions/overriding)'],
+    subject: 'Java',
+    question: 'Java Multithreading & Executor Framework Spike',
+    answer: 'Implemented custom ThreadPoolExecutor with ArrayBlockingQueue and graceful shutdown hooks to handle concurrent task processing.',
+    keyTakeaways: ['ThreadPoolExecutor worker threads', 'RejectedExecutionHandler policy'],
     importance: 'High',
-    status: 'Mastered',
-    efficiency: 100
+    status: 'Completed',
+    efficiency: 95
   },
   {
-    subject: 'System Design',
-    question: 'How do you scale a web application horizontally vs vertically?',
-    answer: 'Vertical scaling (Scale-up) adds more CPU/RAM to a single node. Horizontal scaling (Scale-out) adds more server nodes behind a Load Balancer.',
-    keyTakeaways: ['Horizontal scaling requires stateless application servers', 'Load balancers: Nginx, HAProxy, AWS ALB'],
+    subject: 'System',
+    question: 'System Design: Distributed Caching & Rate Limiting',
+    answer: 'Designed Redis distributed cache strategy with TTL eviction and implemented Sliding Window Counter for API Gateway rate limiting.',
+    keyTakeaways: ['Redis Cache-aside pattern', 'Sliding Window Rate Limiter algorithm'],
     importance: 'High',
-    status: 'Learning',
-    efficiency: 80
+    status: 'In Progress',
+    efficiency: 85
   }
 ];
 

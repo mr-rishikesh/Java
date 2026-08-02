@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Flame, Zap, Award } from 'lucide-react';
 
-export default function Heatmap({ heatmapData }) {
+export default function Heatmap({ heatmapData, selectedDate, onSelectDate }) {
   const [hoveredDay, setHoveredDay] = useState(null);
 
   // Generate 52 weeks (364 days) leading up to today
@@ -139,20 +139,28 @@ export default function Heatmap({ heatmapData }) {
                 {week.map((day, dIdx) => {
                   const color = getHeatColor(day.count, day.efficiency);
                   const isHighEff = day.efficiency >= 90 && day.count > 0;
+                  const isSelected = selectedDate === day.date;
                   return (
                     <div
                       key={dIdx}
                       onMouseEnter={() => setHoveredDay(day)}
                       onMouseLeave={() => setHoveredDay(null)}
+                      onClick={() => onSelectDate && onSelectDate(day.date)}
                       style={{
                         width: '12px',
                         height: '12px',
                         borderRadius: '3px',
                         backgroundColor: color,
-                        boxShadow: isHighEff ? '0 0 6px rgba(52, 211, 153, 0.8)' : 'none',
+                        boxShadow: isSelected 
+                          ? '0 0 8px #00BCF2' 
+                          : (isHighEff ? '0 0 6px rgba(52, 211, 153, 0.8)' : 'none'),
                         cursor: 'pointer',
-                        transition: 'transform 0.15s ease',
-                        border: day.count > 0 ? '1px solid rgba(255,255,255,0.1)' : 'none'
+                        transition: 'transform 0.15s ease, border-color 0.15s ease',
+                        border: isSelected 
+                          ? '2px solid #00BCF2' 
+                          : (day.count > 0 ? '1px solid rgba(255,255,255,0.1)' : 'none'),
+                        transform: isSelected ? 'scale(1.25)' : 'none',
+                        zIndex: isSelected ? 2 : 1
                       }}
                     />
                   );

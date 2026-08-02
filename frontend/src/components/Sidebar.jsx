@@ -14,25 +14,16 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
     { id: 'dsa', label: 'DSA Hub', icon: Code2, badge: '474 Sheet' },
-    { id: 'core', label: 'Core CS', icon: Cpu, badge: '5 Topics' },
+    { id: 'core', label: 'Work Log & CS', icon: Cpu, badge: 'Daily' },
     { id: 'project', label: 'Projects', icon: FolderGit2, badge: null },
     { id: 'apply', label: 'Applications', icon: Briefcase, badge: 'Tracker' },
     { id: 'communication', label: 'Communication', icon: MessageSquare, badge: 'STAR' },
   ];
 
   return (
-    <aside style={{
-      width: '260px',
-      backgroundColor: 'var(--fluent-surface-1)',
-      borderRight: '1px solid var(--fluent-border)',
-      display: 'flex',
-      flexDirection: 'column',
-      flexShrink: 0,
-      minHeight: '100vh',
-      padding: '20px 16px'
-    }}>
+    <aside className="app-sidebar">
       {/* Brand Header */}
-      <div style={{
+      <div className="sidebar-logo-section" style={{
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
@@ -44,16 +35,16 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           width: '38px',
           height: '38px',
           borderRadius: '10px',
-          background: 'linear-gradient(135deg, #0078D4, #00BCF2)',
+          background: 'var(--fluent-blue)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 0 15px rgba(0, 188, 242, 0.4)'
+          boxShadow: '0 0 15px rgba(56, 189, 248, 0.3)'
         }}>
           <Zap size={22} color="#ffffff" />
         </div>
         <div>
-          <h1 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(90deg, #F3F4F6, #00BCF2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h1 style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--fluent-cyan)' }}>
             PrepPulse
           </h1>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>
@@ -83,7 +74,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 padding: '10px 14px',
                 borderRadius: '10px',
                 border: 'none',
-                background: isActive ? 'linear-gradient(90deg, rgba(0, 120, 212, 0.2), rgba(0, 188, 242, 0.1))' : 'transparent',
+                background: isActive ? 'rgba(0, 120, 212, 0.2)' : 'transparent',
                 color: isActive ? '#00BCF2' : 'var(--text-secondary)',
                 fontWeight: isActive ? 700 : 500,
                 fontSize: '0.9rem',
@@ -94,7 +85,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
               }}
               onMouseEnter={(e) => {
                 if (!isActive) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                  e.currentTarget.style.background = 'var(--fluent-sidebar-hover)';
                   e.currentTarget.style.color = 'var(--text-primary)';
                 }
               }}
@@ -114,7 +105,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                   fontSize: '0.68rem',
                   padding: '2px 8px',
                   borderRadius: '12px',
-                  background: isActive ? 'rgba(0, 188, 242, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+                  background: isActive ? 'rgba(0, 188, 242, 0.2)' : 'var(--fluent-badge-inactive-bg)',
                   color: isActive ? '#00BCF2' : 'var(--text-muted)',
                   fontWeight: 600
                 }}>
@@ -139,7 +130,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       </nav>
 
       {/* Footer Profile / System Info */}
-      <div style={{
+      <div className="sidebar-footer" style={{
         marginTop: 'auto',
         padding: '14px',
         borderRadius: '12px',
@@ -153,7 +144,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           width: '36px',
           height: '36px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #107C41, #34D399)',
+          background: '#107C41',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
