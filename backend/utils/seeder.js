@@ -9,55 +9,52 @@ const Communication = require('../models/Communication');
 const DailyActivity = require('../models/DailyActivity');
 
 const seedDataFromFile = async () => {
-  const filePath = path.join(__dirname, '../../strivers_a2z_sheet.json');
-  if (!fs.existsSync(filePath)) {
-    console.error(`[Seeder Error]: File not found at ${filePath}`);
-    return [];
-  }
+  try {
+    const sheet = require('../../strivers_a2z_sheet.json');
+    const problemDocs = [];
 
-  const fileRaw = fs.readFileSync(filePath, 'utf-8');
-  const sheet = JSON.parse(fileRaw);
+    if (sheet.sections && Array.isArray(sheet.sections)) {
+      for (const sec of sheet.sections) {
+        const catId = sec.category_id || '';
+        const catName = sec.category_name || 'General';
 
-  const problemDocs = [];
+        if (sec.subcategories && Array.isArray(sec.subcategories)) {
+          for (const sub of sec.subcategories) {
+            const subId = sub.subcategory_id || '';
+            const subName = sub.subcategory_name || 'General';
 
-  if (sheet.sections && Array.isArray(sheet.sections)) {
-    for (const sec of sheet.sections) {
-      const catId = sec.category_id || '';
-      const catName = sec.category_name || 'General';
-
-      if (sec.subcategories && Array.isArray(sec.subcategories)) {
-        for (const sub of sec.subcategories) {
-          const subId = sub.subcategory_id || '';
-          const subName = sub.subcategory_name || 'General';
-
-          if (sub.problems && Array.isArray(sub.problems)) {
-            for (const p of sub.problems) {
-              problemDocs.push({
-                problem_id: p.problem_id,
-                problem_name: p.problem_name,
-                category_id: catId,
-                category_name: catName,
-                subcategory_id: subId,
-                subcategory_name: subName,
-                article: p.article || null,
-                youtube: p.youtube || null,
-                leetcode: p.leetcode || null,
-                plus: p.plus || null,
-                editorial: p.editorial || null,
-                link: p.link || null,
-                difficulty: p.difficulty ? (p.difficulty.charAt(0).toUpperCase() + p.difficulty.slice(1).toLowerCase()) : 'Easy',
-                status: 'Unsolved',
-                efficiency: 0,
-                userNotes: ''
-              });
+            if (sub.problems && Array.isArray(sub.problems)) {
+              for (const p of sub.problems) {
+                problemDocs.push({
+                  problem_id: p.problem_id,
+                  problem_name: p.problem_name,
+                  category_id: catId,
+                  category_name: catName,
+                  subcategory_id: subId,
+                  subcategory_name: subName,
+                  article: p.article || null,
+                  youtube: p.youtube || null,
+                  leetcode: p.leetcode || null,
+                  plus: p.plus || null,
+                  editorial: p.editorial || null,
+                  link: p.link || null,
+                  difficulty: p.difficulty ? (p.difficulty.charAt(0).toUpperCase() + p.difficulty.slice(1).toLowerCase()) : 'Easy',
+                  status: 'Unsolved',
+                  efficiency: 0,
+                  userNotes: ''
+                });
+              }
             }
           }
         }
       }
     }
-  }
 
-  return problemDocs;
+    return problemDocs;
+  } catch (error) {
+    console.error('[Seeder Error]: Failed to load strivers_a2z_sheet.json', error);
+    return [];
+  }
 };
 
 const defaultCoreQuestions = [
