@@ -1,48 +1,48 @@
 :root {
-  /* Microsoft Fluent 2 Dark Color System - SOLID COLORS ONLY */
-  --fluent-bg: #0B0E14;
-  --fluent-surface-1: #121824;
-  --fluent-surface-2: #182030;
-  --fluent-surface-3: #212C42;
-  --fluent-surface-hover: #2B3955;
+  /* Microsoft Fluent 2 Dark Color System - Rich Navy Blue Theme - SOLID COLORS ONLY */
+  --fluent-bg: #0A1128;
+  --fluent-surface-1: #101E3D;
+  --fluent-surface-2: #16284E;
+  --fluent-surface-3: #1E3566;
+  --fluent-surface-hover: #264380;
   
-  --fluent-border: #1E293B;
-  --fluent-border-glow: #0078D4;
+  --fluent-border: #1E3A70;
+  --fluent-border-glow: #2563EB;
   
-  /* Fluent Accents */
-  --fluent-blue: #0078D4;
-  --fluent-cyan: #00BCF2;
-  --fluent-teal: #00B7C3;
-  --fluent-green: #107C41;
-  --fluent-purple: #8764B8;
-  --fluent-pink: #E3008C;
-  --fluent-amber: #F2C94C;
+  /* Fluent Navy Accents */
+  --fluent-blue: #1D4ED8;
+  --fluent-cyan: #38BDF8;
+  --fluent-teal: #0D9488;
+  --fluent-green: #10B981;
+  --fluent-purple: #7C3AED;
+  --fluent-pink: #EC4899;
+  --fluent-amber: #F59E0B;
   
   /* Text */
-  --text-primary: #F3F4F6;
-  --text-secondary: #9CA3AF;
-  --text-muted: #6B7280;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
   
   /* Heatmap Color Scale (LeetCode/GitHub style based on Efficiency) */
-  --heat-empty: #161D2A;
-  --heat-level-1: #064E3B; /* 1-40% efficiency */
-  --heat-level-2: #047857; /* 41-70% efficiency */
-  --heat-level-3: #10B981; /* 71-89% efficiency */
-  --heat-level-4: #34D399; /* 90-100% efficiency */
+  --heat-empty: #16284E;
+  --heat-level-1: #065F46;
+  --heat-level-2: #047857;
+  --heat-level-3: #10B981;
+  --heat-level-4: #34D399;
   --heat-glow: 0 0 10px rgba(52, 211, 153, 0.6);
 
-  /* Dynamic variables - Solid */
-  --fluent-card-bg: #121824;
-  --fluent-navbar-bg: #121824;
-  --fluent-sidebar-hover: #1D273B;
-  --fluent-badge-inactive-bg: #1A2234;
-  --accent-text: #00BCF2;
+  /* Dynamic variables - Solid Navy */
+  --fluent-card-bg: #101E3D;
+  --fluent-navbar-bg: #0A1128;
+  --fluent-sidebar-hover: #16284E;
+  --fluent-badge-inactive-bg: #16284E;
+  --accent-text: #38BDF8;
 
   /* Elevation */
-  --fluent-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-  --fluent-shadow-md: 0 8px 16px rgba(0, 0, 0, 0.3);
-  --fluent-shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.4);
-  --fluent-shadow-glow: 0 0 20px rgba(0, 120, 212, 0.25);
+  --fluent-shadow-sm: 0 2px 4px rgba(5, 10, 25, 0.3);
+  --fluent-shadow-md: 0 8px 16px rgba(5, 10, 25, 0.4);
+  --fluent-shadow-lg: 0 16px 32px rgba(5, 10, 25, 0.5);
+  --fluent-shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
   
   /* Typography */
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -140,7 +140,7 @@ body {
 }
 
 .fluent-btn-primary {
-  background: linear-gradient(135deg, var(--fluent-blue), var(--fluent-cyan));
+  background: var(--fluent-blue);
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
 }

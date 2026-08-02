@@ -99,17 +99,71 @@ router.get('/categories', async (req, res) => {
 
 // Helper to get a random problem for a specific Daily Pick slot
 async function getRandomProblemForSlot(slotType, excludedIds = []) {
-  const query = {
-    status: { $ne: 'Solved' },
+  const oneMonthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+
+  // --- TIER 1: HIGHEST PRIORITY - Due Revising Problems ---
+  const revisingQuery = {
+    status: 'Revising',
     neverShow: { $ne: true },
-    _id: { $nin: excludedIds }
+    _id: { $nin: excludedIds },
+    $or: [
+      { snoozeUntil: null },
+      { snoozeUntil: { $lte: new Date() } }
+    ]
   };
 
-  // Snooze filtering
-  query.$or = [
-    { snoozeUntil: null },
-    { snoozeUntil: { $lte: new Date() } }
-  ];
+  if (slotType === 'dp') {
+    revisingQuery.category_name = 'Dynamic Programming [Patterns and Problems]';
+  } else if (slotType === 'graph') {
+    revisingQuery.category_name = 'Graphs [Concepts & Problems]';
+  } else {
+    revisingQuery.category_name = {
+      $nin: [
+        'Dynamic Programming [Patterns and Problems]',
+        'Graphs [Concepts & Problems]'
+      ]
+    };
+  }
+
+  // 1A. Due Revising problems not presented in the last 30 days
+  let revisingPool = await Problem.find({
+    ...revisingQuery,
+    $or: [
+      { lastPresentedAt: null },
+      { lastPresentedAt: { $lte: oneMonthAgo } }
+    ]
+  });
+
+  // 1B. Relax 30-day presentation cooldown for due Revising problems
+  if (revisingPool.length === 0) {
+    revisingPool = await Problem.find(revisingQuery);
+  }
+
+  // If we found any due Revising problems, prioritize and return one!
+  if (revisingPool.length > 0) {
+    return revisingPool[Math.floor(Math.random() * revisingPool.length)];
+  }
+
+  // --- TIER 2: General Candidate Pool (Unsolved & Solved 30+ days ago) ---
+  const query = {
+    neverShow: { $ne: true },
+    _id: { $nin: excludedIds },
+    $and: [
+      {
+        $or: [
+          { status: { $ne: 'Solved' } },
+          { status: 'Solved', lastSolvedAt: null },
+          { status: 'Solved', lastSolvedAt: { $lte: oneMonthAgo } }
+        ]
+      },
+      {
+        $or: [
+          { snoozeUntil: null },
+          { snoozeUntil: { $lte: new Date() } }
+        ]
+      }
+    ]
+  };
 
   // Slot matching
   if (slotType === 'dp') {
@@ -126,7 +180,6 @@ async function getRandomProblemForSlot(slotType, excludedIds = []) {
   }
 
   // Enforce 30-day non-repeat cooldown
-  const oneMonthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
   const finalQuery = {
     ...query,
     $or: [
@@ -301,7 +354,11 @@ router.patch('/:id', async (req, res) => {
     if (userNotes !== undefined) updateData.userNotes = userNotes;
 
     if (snoozeOption !== undefined) {
-      if (snoozeOption === '1_month') {
+      if (snoozeOption === '2_weeks') {
+        updateData.snoozeUntil = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+      } else if (snoozeOption === '3_weeks') {
+        updateData.snoozeUntil = new Date(Date.now() + 21 * 24 * 60 * 60 * 1000);
+      } else if (snoozeOption === '1_month') {
         updateData.snoozeUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       } else if (snoozeOption === '2_months') {
         updateData.snoozeUntil = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);

@@ -33,9 +33,15 @@ export default function DailyThree({ problems, onSolve }) {
   };
 
   const handleReviseOption = (prob, durationStr) => {
-    let dateVal = null; // '1_month' clears snooze (snoozeUntil = null) so it appears immediately (before 1 month has passed!)
-    if (durationStr === '2_months') {
-      dateVal = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // '2_months' sets snooze to 30 days so it appears in month 2 (before 2 months has passed!)
+    let dateVal = null;
+    if (durationStr === '2_weeks') {
+      dateVal = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+    } else if (durationStr === '3_weeks') {
+      dateVal = new Date(Date.now() + 21 * 24 * 60 * 60 * 1000);
+    } else if (durationStr === '1_month') {
+      dateVal = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    } else if (durationStr === '2_months') {
+      dateVal = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
     }
     onSolve(prob._id || prob.problem_id, { status: 'Revising', snoozeUntil: dateVal });
     setActiveReviseProbId(null);
@@ -68,7 +74,7 @@ export default function DailyThree({ problems, onSolve }) {
             width: '34px',
             height: '34px',
             borderRadius: '10px',
-            background: 'linear-gradient(135deg, #0078D4, #00BCF2)',
+            background: 'var(--fluent-blue)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -203,23 +209,37 @@ export default function DailyThree({ problems, onSolve }) {
                     </p>
                   </div>
                   
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '4px' }}>
-                      <button
-                        onClick={() => { setTempReviseOption('1_month'); setCustomReviseDate(''); }}
-                        className={`fluent-btn ${tempReviseOption === '1_month' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
-                        style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
-                      >
-                        1 Month
-                      </button>
-                      <button
-                        onClick={() => { setTempReviseOption('2_months'); setCustomReviseDate(''); }}
-                        className={`fluent-btn ${tempReviseOption === '2_months' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
-                        style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
-                      >
-                        2 Months
-                      </button>
-                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '4px' }}>
+                        <button
+                          onClick={() => { setTempReviseOption('2_weeks'); setCustomReviseDate(''); }}
+                          className={`fluent-btn ${tempReviseOption === '2_weeks' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                          style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
+                        >
+                          2 Weeks
+                        </button>
+                        <button
+                          onClick={() => { setTempReviseOption('3_weeks'); setCustomReviseDate(''); }}
+                          className={`fluent-btn ${tempReviseOption === '3_weeks' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                          style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
+                        >
+                          3 Weeks
+                        </button>
+                        <button
+                          onClick={() => { setTempReviseOption('1_month'); setCustomReviseDate(''); }}
+                          className={`fluent-btn ${tempReviseOption === '1_month' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                          style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
+                        >
+                          1 Month
+                        </button>
+                        <button
+                          onClick={() => { setTempReviseOption('2_months'); setCustomReviseDate(''); }}
+                          className={`fluent-btn ${tempReviseOption === '2_months' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                          style={{ padding: '6px 4px', fontSize: '0.72rem', justifyContent: 'center' }}
+                        >
+                          2 Months
+                        </button>
+                      </div>
 
                     <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '4px' }}>
                       <input
@@ -280,7 +300,11 @@ export default function DailyThree({ problems, onSolve }) {
                         <span className={`fluent-badge ${diffClass}`}>
                           {prob.difficulty || 'Medium'}
                         </span>
-                        {isSolved ? (
+                        {isRevisingStatus ? (
+                          <span className="fluent-badge" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', border: '1px solid rgba(16, 185, 129, 0.3)', gap: '4px', display: 'inline-flex', alignItems: 'center' }}>
+                            <RotateCcw size={12} /> Revision Due
+                          </span>
+                        ) : isSolved ? (
                           <span className="fluent-badge badge-solved" style={{ gap: '4px' }}>
                             <CheckCircle2 size={12} /> Solved ({prob.efficiency || 100}%)
                           </span>

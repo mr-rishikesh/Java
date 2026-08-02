@@ -48,7 +48,7 @@ export default function Dashboard({
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Welcome & Target Banner */}
       <div className="fluent-card fluent-card-glow" style={{
-        background: 'linear-gradient(135deg, rgba(0, 120, 212, 0.25), rgba(0, 188, 242, 0.15))',
+        background: 'rgba(0, 120, 212, 0.2)',
         border: '1px solid rgba(0, 188, 242, 0.3)',
         padding: '24px',
         display: 'flex',

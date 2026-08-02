@@ -151,8 +151,42 @@ class InMemoryStore {
     const now = new Date();
     const oneMonthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
+    // --- TIER 1: HIGHEST PRIORITY - Due Revising Problems ---
+    const filterRevising = (p) => {
+      if (p.status !== 'Revising') return false;
+      if (p.neverShow === true) return false;
+      const probId = p._id || p.problem_id;
+      if (excludedIds.includes(probId)) return false;
+      if (p.snoozeUntil && new Date(p.snoozeUntil) > now) return false;
+
+      if (slotType === 'dp') {
+        return p.category_name === 'Dynamic Programming [Patterns and Problems]';
+      } else if (slotType === 'graph') {
+        return p.category_name === 'Graphs [Concepts & Problems]';
+      } else {
+        return p.category_name !== 'Dynamic Programming [Patterns and Problems]' && p.category_name !== 'Graphs [Concepts & Problems]';
+      }
+    };
+
+    let revisingPool = this.problems.filter(p => {
+      if (!filterRevising(p)) return false;
+      if (p.lastPresentedAt && new Date(p.lastPresentedAt) > oneMonthAgo) return false;
+      return true;
+    });
+
+    if (revisingPool.length === 0) {
+      revisingPool = this.problems.filter(p => filterRevising(p));
+    }
+
+    if (revisingPool.length > 0) {
+      return revisingPool[Math.floor(Math.random() * revisingPool.length)];
+    }
+
+    // --- TIER 2: General Candidate Pool ---
     const filterBase = (p) => {
-      if (p.status === 'Solved') return false;
+      if (p.status === 'Solved') {
+        if (p.lastSolvedAt && new Date(p.lastSolvedAt) > oneMonthAgo) return false;
+      }
       if (p.neverShow === true) return false;
       
       const probId = p._id || p.problem_id;

@@ -40,7 +40,7 @@ export default function StatCard({ title, value, subtext, icon: Icon, color = '#
             <div style={{
               height: '100%',
               width: `${Math.min(100, Math.max(0, progress))}%`,
-              background: `linear-gradient(90deg, ${color}, #00BCF2)`,
+              background: color,
               borderRadius: '3px',
               transition: 'width 0.5s ease'
             }} />

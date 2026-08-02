@@ -2,22 +2,27 @@ import React, { useState } from 'react';
 import { Save, X } from 'lucide-react';
 
 export default function CoreModal({ onClose, onAdd }) {
-  const [subject, setSubject] = useState('Operating Systems');
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [importance, setImportance] = useState('High');
-  const [efficiency, setEfficiency] = useState(85);
+  const [subject, setSubject] = useState('Core Subject');
+  const [workLog, setWorkLog] = useState('');
+  const [efficiency, setEfficiency] = useState(90);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!question.trim()) return;
+    if (!workLog.trim()) return;
+
+    // Derive a clean title from the first line or first 80 characters
+    const firstLine = workLog.trim().split('\n')[0];
+    const derivedTitle = firstLine.length > 80 ? firstLine.substring(0, 80) + '...' : firstLine;
+
     onAdd({
       subject,
-      question,
-      answer,
-      importance,
+      question: derivedTitle,
+      answer: workLog.trim(),
+      keyTakeaways: [],
+      importance: 'High',
       efficiency,
-      status: 'Learning'
+      status: 'Completed',
+      createdAt: new Date().toISOString()
     });
     onClose();
   };
@@ -26,99 +31,97 @@ export default function CoreModal({ onClose, onAdd }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ padding: '28px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            Add Core CS Question
-          </h3>
+          <div>
+            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+              Log Today's Work
+            </h3>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+              Select category and write your work details for today.
+            </p>
+          </div>
           <button className="fluent-btn fluent-btn-ghost" onClick={onClose} style={{ padding: '6px' }}>
             <X size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Category Selector */}
           <div>
-            <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-              Subject / Discipline
+            <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '8px' }}>
+              Select Work Category *
             </label>
-            <select
-              className="fluent-select"
-              style={{ width: '100%' }}
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            >
-              <option value="Operating Systems">Operating Systems</option>
-              <option value="DBMS">DBMS</option>
-              <option value="Computer Networks">Computer Networks</option>
-              <option value="OOPs">OOPs</option>
-              <option value="System Design">System Design</option>
-            </select>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
+              <button
+                type="button"
+                onClick={() => setSubject('Core Subject')}
+                className={`fluent-btn ${subject === 'Core Subject' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                style={{ padding: '10px 8px', justifyContent: 'center', fontSize: '0.8rem' }}
+              >
+                Core Subject
+              </button>
+              <button
+                type="button"
+                onClick={() => setSubject('Java')}
+                className={`fluent-btn ${subject === 'Java' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                style={{ padding: '10px 8px', justifyContent: 'center', fontSize: '0.8rem' }}
+              >
+                Java
+              </button>
+              <button
+                type="button"
+                onClick={() => setSubject('System')}
+                className={`fluent-btn ${subject === 'System' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+                style={{ padding: '10px 8px', justifyContent: 'center', fontSize: '0.8rem' }}
+              >
+                System
+              </button>
+            </div>
           </div>
 
+          {/* Single Work Log Input Field */}
           <div>
             <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-              Question *
-            </label>
-            <input
-              type="text"
-              required
-              className="fluent-input"
-              placeholder="e.g., What is Virtual Memory and Paging?"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-              Core Explanation / Answer
+              Today's Work Log / Details *
             </label>
             <textarea
               className="fluent-input"
-              rows={4}
-              placeholder="Provide a concise bulleted answer for rapid revision..."
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
+              rows={6}
+              required
+              placeholder="Write today's work details, code updates, learnings, or system changes here..."
+              value={workLog}
+              onChange={(e) => setWorkLog(e.target.value)}
+              style={{ width: '100%', resize: 'vertical' }}
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-            <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-                Importance
+          {/* Work Efficiency Rating */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700 }}>
+                Work Efficiency Rating
               </label>
-              <select
-                className="fluent-select"
-                style={{ width: '100%' }}
-                value={importance}
-                onChange={(e) => setImportance(e.target.value)}
-              >
-                <option value="High">High (Must Know)</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
+              <span style={{ color: 'var(--accent-text)', fontWeight: 700, fontSize: '0.85rem' }}>
+                {efficiency}%
+              </span>
             </div>
-
-            <div>
-              <label style={{ fontSize: '0.82rem', fontWeight: 700, display: 'block', marginBottom: '6px' }}>
-                Mastery Efficiency ({efficiency}%)
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                step="5"
-                value={efficiency}
-                onChange={(e) => setEfficiency(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#00BCF2', cursor: 'pointer', marginTop: '8px' }}
-              />
-            </div>
+            <input
+              type="range"
+              min="20"
+              max="100"
+              step="5"
+              value={efficiency}
+              onChange={(e) => setEfficiency(Number(e.target.value))}
+              style={{ width: '100%', accentColor: 'var(--fluent-blue)', cursor: 'pointer' }}
+            />
           </div>
 
+          {/* Actions */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px' }}>
             <button type="button" className="fluent-btn fluent-btn-secondary" onClick={onClose}>
               Cancel
             </button>
             <button type="submit" className="fluent-btn fluent-btn-primary">
-              <Save size={16} /> Save Question
+              <Save size={16} /> Save Work Log
             </button>
           </div>
         </form>

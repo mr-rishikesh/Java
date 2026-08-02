@@ -1,16 +1,47 @@
 import React, { useState } from 'react';
-import { Cpu, Plus, CheckCircle2, Award, BookOpen, Layers } from 'lucide-react';
+import { Cpu, Plus, CheckCircle2, Award, Clock, BookOpen, Layers, Code2, Terminal } from 'lucide-react';
 import CoreModal from '../components/CoreModal';
 
 export default function CorePage({ coreList, onAddCore, onUpdateCore }) {
-  const [selectedSubject, setSelectedSubject] = useState('ALL');
+  const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [showModal, setShowModal] = useState(false);
 
-  const subjects = ['Operating Systems', 'DBMS', 'Computer Networks', 'OOPs', 'System Design'];
+  const categories = ['Core Subject', 'Java', 'System'];
 
-  const filtered = selectedSubject === 'ALL' 
-    ? coreList 
-    : coreList.filter(c => c.subject === selectedSubject);
+  const filtered = selectedCategory === 'ALL'
+    ? coreList
+    : coreList.filter(item => {
+        if (selectedCategory === 'Core Subject') {
+          return item.subject === 'Core Subject' || ['Operating Systems', 'DBMS', 'Computer Networks', 'OOPs'].includes(item.subject);
+        }
+        if (selectedCategory === 'System') {
+          return item.subject === 'System' || item.subject === 'System Design';
+        }
+        return item.subject === selectedCategory;
+      });
+
+  const formatTimestamp = (dateStr) => {
+    if (!dateStr) return 'Today';
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  const getCategoryColor = (cat) => {
+    if (cat === 'Java') return '#F59E0B';
+    if (cat === 'System' || cat === 'System Design') return '#EC4899';
+    return '#38BDF8';
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -18,116 +49,156 @@ export default function CorePage({ coreList, onAddCore, onUpdateCore }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-            Core CS Subjects & System Design
+            Daily Work Log & Technical Topics
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-            OS, DBMS, Computer Networks, OOPs, and Scalable System Design Q&A
+            Document your daily progress across Core CS Subjects, Java Development, and System Architecture
           </p>
         </div>
 
-        <button onClick={() => setShowModal(true)} className="fluent-btn fluent-btn-primary">
-          <Plus size={16} /> Add Core Question
+        <button onClick={() => setShowModal(true)} className="fluent-btn fluent-btn-primary" style={{ padding: '10px 18px' }}>
+          <Plus size={18} /> Add Work
         </button>
       </div>
 
-      {/* Subject Filter Tabs */}
+      {/* Category Filter Tabs */}
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
         <button
-          onClick={() => setSelectedSubject('ALL')}
-          className={`fluent-btn ${selectedSubject === 'ALL' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+          onClick={() => setSelectedCategory('ALL')}
+          className={`fluent-btn ${selectedCategory === 'ALL' ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
         >
-          All Subjects ({coreList.length})
+          All Work Logs ({coreList.length})
         </button>
-        {subjects.map(subj => {
-          const count = coreList.filter(c => c.subject === subj).length;
+        {categories.map(cat => {
+          const count = coreList.filter(item => {
+            if (cat === 'Core Subject') {
+              return item.subject === 'Core Subject' || ['Operating Systems', 'DBMS', 'Computer Networks', 'OOPs'].includes(item.subject);
+            }
+            if (cat === 'System') {
+              return item.subject === 'System' || item.subject === 'System Design';
+            }
+            return item.subject === cat;
+          }).length;
+
           return (
             <button
-              key={subj}
-              onClick={() => setSelectedSubject(subj)}
-              className={`fluent-btn ${selectedSubject === subj ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`fluent-btn ${selectedCategory === cat ? 'fluent-btn-primary' : 'fluent-btn-secondary'}`}
             >
-              {subj} ({count})
+              {cat} ({count})
             </button>
           );
         })}
       </div>
 
-      {/* Questions Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))', gap: '16px' }}>
-        {filtered.map((item, idx) => {
-          const isMastered = item.status === 'Mastered';
+      {/* Work Cards Grid - Styled like Project Section Cards */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {filtered && filtered.length > 0 ? (
+          filtered.map((item, idx) => {
+            const isCompleted = item.status === 'Completed' || item.status === 'Mastered';
+            const catColor = getCategoryColor(item.subject);
 
-          return (
-            <div
-              key={item._id || idx}
-              className="fluent-card"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                gap: '14px',
-                border: isMastered ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid var(--fluent-border)'
-              }}
-            >
-              <div>
-                {/* Header */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: '4px', background: 'rgba(0,188,242,0.15)', color: '#00BCF2' }}>
-                    {item.subject}
-                  </span>
-                  <span className={`fluent-badge ${isMastered ? 'badge-easy' : 'badge-medium'}`}>
-                    {item.status || 'Learning'}
+            return (
+              <div
+                key={item._id || idx}
+                className="fluent-card"
+                style={{
+                  padding: '24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px',
+                  border: '1px solid var(--fluent-border)',
+                  background: 'var(--fluent-card-bg)'
+                }}
+              >
+                {/* Header Row: Category Badge + Timestamp Badge + Status */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span style={{
+                      fontSize: '0.78rem',
+                      fontWeight: 800,
+                      padding: '4px 12px',
+                      borderRadius: '6px',
+                      background: `rgba(${catColor === '#F59E0B' ? '245, 158, 11' : catColor === '#EC4899' ? '236, 72, 153' : '56, 189, 248'}, 0.15)`,
+                      color: catColor,
+                      border: `1px solid ${catColor}40`
+                    }}>
+                      {item.subject}
+                    </span>
+
+                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <Clock size={13} /> {formatTimestamp(item.createdAt || item.date)}
+                    </span>
+                  </div>
+
+                  <span className={`fluent-badge ${isCompleted ? 'badge-solved' : 'badge-medium'}`}>
+                    {isCompleted ? 'Completed' : 'In Progress'}
                   </span>
                 </div>
 
-                {/* Question */}
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '10px' }}>
+                {/* Work Title / Topic */}
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
                   {item.question}
                 </h3>
 
-                {/* Answer Box */}
+                {/* Work Log Description Box */}
                 <div style={{
-                  padding: '12px',
+                  padding: '16px',
                   borderRadius: '8px',
                   background: 'var(--fluent-surface-2)',
                   border: '1px solid var(--fluent-border)',
-                  fontSize: '0.83rem',
+                  fontSize: '0.88rem',
                   color: 'var(--text-secondary)',
                   whiteSpace: 'pre-line',
-                  lineHeight: '1.5'
+                  lineHeight: '1.6'
                 }}>
                   {item.answer}
                 </div>
 
-                {/* Key Takeaways */}
+                {/* Key Takeaways / Tech Stack Pills */}
                 {item.keyTakeaways && item.keyTakeaways.length > 0 && (
-                  <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                     {item.keyTakeaways.map((tk, tIdx) => (
-                      <span key={tIdx} style={{ fontSize: '0.72rem', background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', padding: '2px 8px', borderRadius: '4px' }}>
-                        • {tk}
+                      <span key={tIdx} style={{
+                        fontSize: '0.75rem',
+                        padding: '4px 10px',
+                        borderRadius: '6px',
+                        background: 'var(--fluent-surface-2)',
+                        border: '1px solid var(--fluent-border)',
+                        color: 'var(--accent-text)',
+                        fontWeight: 600
+                      }}>
+                        {tk}
                       </span>
                     ))}
                   </div>
                 )}
-              </div>
 
-              {/* Footer Controls */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid var(--fluent-border)' }}>
-                <span style={{ fontSize: '0.78rem', color: '#00BCF2', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Award size={14} /> Efficiency: {item.efficiency || 85}%
-                </span>
+                {/* Footer Bar */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '12px', borderTop: '1px solid var(--fluent-border)' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--fluent-cyan)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <Award size={15} /> Efficiency Rating: {item.efficiency || 90}%
+                  </span>
 
-                <button
-                  onClick={() => onUpdateCore(item._id, { status: isMastered ? 'Learning' : 'Mastered', efficiency: isMastered ? 50 : 95 })}
-                  className={`fluent-btn ${isMastered ? 'fluent-btn-secondary' : 'fluent-btn-primary'}`}
-                  style={{ padding: '6px 12px', fontSize: '0.78rem' }}
-                >
-                  <CheckCircle2 size={14} /> {isMastered ? 'Mark Learning' : 'Mark Mastered'}
-                </button>
+                  <button
+                    onClick={() => onUpdateCore(item._id, { status: isCompleted ? 'In Progress' : 'Completed' })}
+                    className={`fluent-btn ${isCompleted ? 'fluent-btn-secondary' : 'fluent-btn-primary'}`}
+                    style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                  >
+                    <CheckCircle2 size={14} /> {isCompleted ? 'Mark In Progress' : 'Mark Completed'}
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div className="fluent-card" style={{ padding: '36px', textAlign: 'center' }}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+              No work logs found for "{selectedCategory}". Click '+ Add Work' to log your progress!
+            </p>
+          </div>
+        )}
       </div>
 
       {showModal && (
