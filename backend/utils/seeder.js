@@ -10,7 +10,12 @@ const DailyActivity = require('../models/DailyActivity');
 
 const seedDataFromFile = async () => {
   try {
-    const sheet = require('../../strivers_a2z_sheet.json');
+    let sheet;
+    try {
+      sheet = require('../strivers_a2z_sheet.json');
+    } catch (e) {
+      sheet = require('../../strivers_a2z_sheet.json');
+    }
     const problemDocs = [];
 
     if (sheet.sections && Array.isArray(sheet.sections)) {
@@ -242,18 +247,27 @@ const generateInitialHeatmapData = () => {
 
 const runSeeder = async () => {
   try {
+    if (mongoose.connection.readyState === 1) {
+      const existingCount = await Problem.countDocuments();
+      if (existingCount > 0) {
+        console.log(`[Seeder]: MongoDB already contains ${existingCount} problems. Skipping parsing and initial insert.`);
+        return {
+          problems: [],
+          core: [],
+          projects: [],
+          jobs: [],
+          comm: [],
+          heatmap: []
+        };
+      }
+    }
+
     const problemDocs = await seedDataFromFile();
     console.log(`[Seeder]: Prepared ${problemDocs.length} DSA problems from Striver's A2Z sheet.`);
 
     if (mongoose.connection.readyState === 1) {
-      // Clean and seed DB
-      const existingCount = await Problem.countDocuments();
-      if (existingCount === 0) {
-        await Problem.insertMany(problemDocs);
-        console.log(`[Seeder]: Inserted ${problemDocs.length} problems into MongoDB.`);
-      } else {
-        console.log(`[Seeder]: MongoDB already contains ${existingCount} problems. Skipping initial insert.`);
-      }
+      await Problem.insertMany(problemDocs);
+      console.log(`[Seeder]: Inserted ${problemDocs.length} problems into MongoDB.`);
     }
 
     return {

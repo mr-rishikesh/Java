@@ -13,21 +13,60 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Database connection middleware for serverless environment
+let isStoreInitialized = false;
+
+// Database connection & seeding middleware for serverless environment
 app.use(async (req, res, next) => {
-  if (mongoose.connection.readyState !== 1) {
-    await connectDB();
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
+    }
+    
+    if (getIsFallback()) {
+      if (!isStoreInitialized) {
+        await store.init();
+        isStoreInitialized = true;
+        console.log('[Serverless]: In-Memory Data Store Ready.');
+      }
+    } else {
+      if (!isStoreInitialized) {
+        await runSeeder();
+        isStoreInitialized = true;
+        console.log('[Serverless]: MongoDB Seeder Completed.');
+      }
+    }
+  } catch (err) {
+    console.error('[Middleware Error]:', err);
   }
   next();
 });
 
-// Mount Routes
-app.use('/api/dsa', require('./routes/dsaRoutes'));
-app.use('/api/core', require('./routes/coreRoutes'));
-app.use('/api/projects', require('./routes/projectRoutes'));
-app.use('/api/apply', require('./routes/applyRoutes'));
-app.use('/api/communication', require('./routes/commRoutes'));
-app.use('/api/progress', require('./routes/progressRoutes'));
+// Import route modules
+const dsaRoutes = require('./routes/dsaRoutes');
+const coreRoutes = require('./routes/coreRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const applyRoutes = require('./routes/applyRoutes');
+const commRoutes = require('./routes/commRoutes');
+const progressRoutes = require('./routes/progressRoutes');
+
+// Mount Routes (supporting both with and without /api/ prefixes to handle Vercel proxying variations)
+app.use('/api/dsa', dsaRoutes);
+app.use('/dsa', dsaRoutes);
+
+app.use('/api/core', coreRoutes);
+app.use('/core', coreRoutes);
+
+app.use('/api/projects', projectRoutes);
+app.use('/projects', projectRoutes);
+
+app.use('/api/apply', applyRoutes);
+app.use('/apply', applyRoutes);
+
+app.use('/api/communication', commRoutes);
+app.use('/communication', commRoutes);
+
+app.use('/api/progress', progressRoutes);
+app.use('/progress', progressRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -45,9 +84,11 @@ const startServer = async () => {
   
   if (getIsFallback()) {
     await store.init();
+    isStoreInitialized = true;
     console.log('[Server]: In-Memory Data Store Ready.');
   } else {
     await runSeeder();
+    isStoreInitialized = true;
     console.log('[Server]: MongoDB Seeder Completed.');
   }
 
