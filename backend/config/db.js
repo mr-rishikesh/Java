@@ -25,7 +25,9 @@ const connectDB = async () => {
     try {
       const timeout = process.env.VERCEL ? 3000 : 10000;
       const conn = await mongoose.connect(connUri, {
-        serverSelectionTimeoutMS: timeout
+        serverSelectionTimeoutMS: timeout,
+        connectTimeoutMS: timeout,
+        socketTimeoutMS: timeout
       });
       console.log(`[MongoDB Atlas Connected]: ${conn.connection.host} / DB: ${conn.connection.name}`);
       isInMemoryFallback = false;

@@ -97,10 +97,10 @@ const startServer = async () => {
   });
 };
 
-if (process.env.VERCEL) {
-  // Export app instance for Vercel Serverless Function
-  module.exports = app;
-} else {
+// Export app instance for Vercel Serverless Function (unconditional for static analysis)
+module.exports = app;
+
+if (!process.env.VERCEL) {
   // Run standard local server listening on PORT
   startServer();
 }
